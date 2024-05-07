@@ -1,9 +1,4 @@
-"use client";
-
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -11,6 +6,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Popover,
@@ -18,74 +14,88 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const frameworks = [
+type Location = {
+  value: string;
+  label: string;
+};
+
+const locations: Location[] = [
   {
-    value: "next.js",
-    label: "Next.js",
+    value: "dhaka",
+    label: "Dhaka",
   },
   {
-    value: "sveltekit",
-    label: "SvelteKit",
+    value: "sylhet",
+    label: "Sylhet",
   },
   {
-    value: "nuxt.js",
-    label: "Nuxt.js",
+    value: "rajshahi",
+    label: "Rajshahi",
   },
   {
-    value: "remix",
-    label: "Remix",
+    value: "cumilla",
+    label: "Cumilla",
   },
   {
-    value: "astro",
-    label: "Astro",
+    value: "bogura",
+    label: "Bogura",
   },
 ];
 
-export function Combobox() {
+export function ComboBoxResponsive() {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [selectedLocation, setSelectedLocation] =
+    React.useState<Location | null>(null);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full justify-start font-light text-black"
         >
-          {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {selectedLocation ? (
+            <>{selectedLocation.label}</>
+          ) : (
+            <>Select travel location</>
+          )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            {frameworks.map((framework) => (
-              <CommandItem
-                key={framework.value}
-                value={framework.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {framework.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </Command>
+      <PopoverContent className="w-[200px] p-0" align="start">
+        <LocationList setOpen={setOpen} onSelect={setSelectedLocation} />
       </PopoverContent>
     </Popover>
+  );
+}
+
+function LocationList({
+  setOpen,
+  onSelect,
+}: {
+  setOpen: (open: boolean) => void;
+  onSelect: (status: Location | null) => void;
+}) {
+  return (
+    <Command>
+      <CommandInput placeholder="Filter location..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup>
+          {locations.map((location) => (
+            <CommandItem
+              disabled={false}
+              key={location.value}
+              value={location.value}
+              onSelect={(value) => {
+                console.log(value);
+                setOpen(false);
+              }}
+            >
+              {location.label}
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
   );
 }

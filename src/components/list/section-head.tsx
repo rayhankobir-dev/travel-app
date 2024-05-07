@@ -26,7 +26,9 @@ export default function SectionHead() {
           Explore all things to do in Packege
         </h1>
       </div>
-      <p className="font-thin text-sm">THE 10 BEST Phuket Tours & Excursions</p>
+      <p className="hidden lg:block font-thin text-sm">
+        THE 10 BEST Phuket Tours & Excursions
+      </p>
     </section>
   );
 }

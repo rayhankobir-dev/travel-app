@@ -3,6 +3,7 @@ import "./App.css";
 import Home from "./pages/home";
 import MainLayout from "./components/layout/main-layout";
 import List from "./pages/list";
+import SingleTour from "./pages/tour";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/list" element={<List />} />
+        <Route path="/list/:id" element={<SingleTour />} />
       </Route>
     </Routes>
   );

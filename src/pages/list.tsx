@@ -7,7 +7,7 @@ export default function List() {
   return (
     <Fragment>
       <SectionHead />
-      <section className="max-w-7xl mx-auto grid grid-cols-12 gap-4">
+      <section className="max-w-7xl mx-auto grid grid-cols-12 px-6 lg:px-0 gap-4">
         <FilterOptions />
         <ListingArea />
       </section>
