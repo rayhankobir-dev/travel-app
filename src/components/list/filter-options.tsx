@@ -1,17 +1,17 @@
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { CheckboxInput } from "../ui/check-box";
-import { ComboboxDemo } from "../ui/combobox";
+import { Combobox } from "../ui/combobox";
 import { DatePickerWithRange } from "../ui/range-date-picker";
 import { Separator } from "../ui/separator";
 
 export default function FilterOptions() {
   return (
     <Card className="col-span-3 overflow-hidden rounded-xl">
-      <CardHeader className="bg-orange-600 text-white">
+      <CardHeader className="space-y-3 bg-orange-600 text-white">
         <div className="space-y-1">
           <p className="font-light text-sm">Where you travel?</p>
 
-          <ComboboxDemo />
+          <Combobox />
         </div>
         <div className="space-y-1">
           <p className="font-light text-sm">When are you traveling?</p>

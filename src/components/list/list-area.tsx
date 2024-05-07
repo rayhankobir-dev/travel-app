@@ -19,7 +19,7 @@ const sortOptions = {
 };
 
 export default function ListingArea() {
-  const [sortBy, setSortBy] = useState("az");
+  const [sortBy, setSortBy] = useState<keyof typeof sortOptions>("az");
 
   return (
     <section className="col-span-9">
@@ -34,7 +34,12 @@ export default function ListingArea() {
             <DropdownMenuContent className="w-auto">
               <DropdownMenuLabel>Sort by</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
+              <DropdownMenuRadioGroup
+                value={sortBy}
+                onValueChange={(value) =>
+                  setSortBy(value as keyof typeof sortOptions)
+                }
+              >
                 <DropdownMenuRadioItem value="ft">
                   Featured
                 </DropdownMenuRadioItem>
