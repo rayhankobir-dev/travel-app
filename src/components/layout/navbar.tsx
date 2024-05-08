@@ -59,8 +59,13 @@ export default function Navbar() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/activities" className="px-2">
-              Activities
+            <NavLink to="/privacy-policy" className="px-2">
+              Privacy & Policies
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/faq" className="px-2">
+              FAQ's
             </NavLink>
           </li>
           <li>

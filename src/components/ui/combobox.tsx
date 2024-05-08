@@ -73,7 +73,7 @@ function LocationList({
   onSelect,
 }: {
   setOpen: (open: boolean) => void;
-  onSelect: (status: Location | null) => void;
+  onSelect: (location: Location | null) => void;
 }) {
   return (
     <Command>
@@ -86,8 +86,8 @@ function LocationList({
               disabled={false}
               key={location.value}
               value={location.value}
-              onSelect={(value) => {
-                console.log(value);
+              onSelect={() => {
+                onSelect(location);
                 setOpen(false);
               }}
             >

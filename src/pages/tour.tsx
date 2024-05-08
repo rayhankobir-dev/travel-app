@@ -32,13 +32,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Dispatch, SetStateAction, useState } from "react";
 
 export default function SingleTour() {
   return (
     <Fragment>
       <TorHead />
       <ImageGallery />
-      <div className="max-w-7xl mx-auto grid grid-cols-12 gap-5 mt-10">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-5 mt-10 px-6 lg:px-0">
         <TourDetails />
         <BookingCard />
       </div>
@@ -82,7 +89,7 @@ function TorHead() {
 
 function ImageGallery() {
   return (
-    <section className="max-w-7xl mx-auto h-fit">
+    <section className="h-fit max-w-7xl mx-auto px-6 lg:px-0">
       <div className="grid grid-cols-2 gap-2 ">
         <img src={Tour1} className="h-full" />
         <div className="h-full flex flex-col gap-2">
@@ -99,7 +106,7 @@ function ImageGallery() {
 
 function Statstics() {
   return (
-    <section className="max-w-7xl mx-auto grid grid-cols-4 mb-10">
+    <section className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 mb-10">
       <div className="flex items-center gap-3">
         <p className="h-12 w-12 inline-flex justify-center items-center rounded-lg border">
           <Clock size={20} />
@@ -145,8 +152,109 @@ function Statstics() {
 
 function TourDetails() {
   return (
-    <section className="max-w-7xl mx-auto col-span-9">
+    <section className="max-w-7xl mx-auto col-span-12 lg:col-span-9 order-2 lg:order-1">
       <Statstics />
+      <TourOverview />
+      <TourHighLight />
+      <Separator className="my-6" />
+      <TourServices />
+      <Separator className="my-6" />
+      <Faq />
+    </section>
+  );
+}
+
+function BookingCard() {
+  const [personCount, setPersonCount] = useState<number>(1);
+
+  const personPrice = 280;
+
+  const subTotal = personCount * personPrice;
+  const taxes = 0.1 * subTotal;
+  const total = subTotal + taxes;
+
+  return (
+    <Card className="col-span-12 lg:col-span-3 order-1 lg:order-2 h-fit p-4">
+      <CardHeader className="p-0">
+        <CardTitle className="font-medium text-md mb-1">Booking Here</CardTitle>
+      </CardHeader>
+      <CardContent className="p-0 font-light text-sm space-y-3 py-2">
+        <div className="space-y-3">
+          <PersonCounter
+            label="Per person"
+            count={personCount}
+            setCount={setPersonCount}
+            price={personPrice}
+          />
+        </div>
+        <Separator />
+        <div className="space-y-2 mb-5">
+          <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
+            Sub Total:
+            <span className="h-fit border-b border-dashed"></span>
+            <strong className="font-semibold">${subTotal}</strong>
+          </p>
+          <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
+            Taxes:
+            <strong className="font-semibold">${taxes}</strong>
+          </p>
+
+          <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
+            Total:
+            <span className="w-full h-fit border-b border-dashed"></span>
+            <strong className="font-semibold">${total}</strong>
+          </p>
+        </div>
+      </CardContent>
+      <CardFooter className="p-0 mt-5">
+        <Button className="w-full bg-orange-600 hover:bg-orange-500 text-white rounded-lg">
+          Book now
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+
+function PersonCounter({
+  label,
+  price,
+  count = 0,
+  setCount,
+}: {
+  label: string;
+  price: number;
+  count?: number;
+  setCount: Dispatch<SetStateAction<number>>;
+}) {
+  return (
+    <div className="flex justify-between items-center gap-2">
+      <p>
+        {label} (<strong className="font-medium">${price}</strong>)
+      </p>
+      <div className="flex items-center gap-1.5">
+        <Button
+          onClick={() =>
+            setCount((prev: number) => (prev > 1 ? prev - 1 : prev))
+          }
+          className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black"
+        >
+          <Minus size={14} />
+        </Button>
+        <p>{count}</p>
+        <Button
+          onClick={() => setCount((prev: number) => prev + 1)}
+          className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black"
+        >
+          <Plus size={14} />
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function TourOverview() {
+  return (
+    <section>
       <h3 className="font-semibold text-xl">Tour Overview</h3>
       <p className="font-light text-sm">
         The Phi Phi archipelago is a must-visit while in Phuket, and this
@@ -156,9 +264,15 @@ function TourDetails() {
         Beach." Boat transfers, snacks, buffet lunch, snorkeling equipment, and
         Phuket hotel pickup and drop-off all included.
       </p>
+    </section>
+  );
+}
 
+function TourHighLight() {
+  return (
+    <section>
       <h3 className="font-medium text-md mt-5">Tour Highlights</h3>
-      <ul className="flex flex-col font-light text-sm">
+      <ul className="flex flex-col font-light text-sm py-3">
         <li className="inline-flex items-center">
           <Dot />
           Experience the thrill of a speedboat to the stunning Phi Phi Islands
@@ -181,11 +295,15 @@ function TourDetails() {
           Catch a glimpse of the wild monkeys around Monkey Beach
         </li>
       </ul>
+    </section>
+  );
+}
 
-      <Separator className="my-6" />
-
+function TourServices() {
+  return (
+    <section>
       <h3 className="font-semibold text-xl">What's included</h3>
-      <ul className="grid grid-cols-2 gap-y-2 gap-x-4">
+      <ul className="grid grid-cols-2 gap-y-2 gap-x-4 py-3">
         <li className="inline-flex items-center font-light text-sm">
           <Dot />
           Local taxes
@@ -215,131 +333,39 @@ function TourDetails() {
           Alcoholic Beverages
         </li>
       </ul>
-
-      <Separator className="my-6" />
-
-      <h3 className="font-semibold text-xl">Itinerary</h3>
-      <div className="py-3 pl-3">
-        <ol className="relative border-s border-orange-600 border-dashed">
-          <li className="mb-8 ms-6">
-            <div className="absolute w-6 h-6 bg-orange-600 rounded-full  -start-3 border border-orange-500 "></div>
-            <p className="font-light text-sm pt-0.5">Day 1: Airport Pick Up</p>
-          </li>
-          <li className="mb-10 ms-6">
-            <div className="absolute w-4 h-4 bg-white border-orange-600 border-2 rounded-full  -start-2"></div>
-            <p className="font-light text-sm pt-0.5">Day 2: Airport Pick Up</p>
-          </li>
-          <li className="mb-10 ms-6">
-            <div className="absolute w-4 h-4 bg-white border-orange-600 border-2 rounded-full  -start-2"></div>
-            <p className="font-light text-sm pt-0.5">
-              Day 3: Massage & Overnight Train
-            </p>
-            <p className="max-w-lg font-thin text-sm">
-              Like on all of our trips, we can collect you from the airport when
-              you land and take you directly to your hotel. The first Day is
-              just a check-in Day so you have this freedom to explore the city
-              and get settled in.
-            </p>
-          </li>
-          <li className="mb-10 ms-6">
-            <div className="absolute w-4 h-4 bg-white border-orange-600 border-2 rounded-full  -start-2"></div>
-            <p className="font-light text-sm pt-0.5">
-              Day 4: Khao Sok National Park
-            </p>
-          </li>
-          <li className="mb-10 ms-6">
-            <div className="absolute w-4 h-4 bg-white border-orange-600 border-2 rounded-full  -start-2"></div>
-            <p className="font-light text-sm pt-0.5">
-              Day 5: Travel to Koh Phangan
-            </p>
-          </li>
-          <li className="mb-10 ms-6">
-            <div className="absolute w-4 h-4 bg-white border-orange-600 border-2 rounded-full  -start-2"></div>
-            <p className="font-light text-sm pt-0.5">
-              Day 6: Morning Chill & Muay Thai Lesson
-            </p>
-          </li>
-          <li className="mb-10 ms-6">
-            <div className="absolute w-6 h-6 bg-orange-600 rounded-full  -start-3 border border-orange-500 "></div>
-            <p className="font-light text-sm pt-0.5">Day 7: Island Boat Trip</p>
-          </li>
-        </ol>
-      </div>
     </section>
   );
 }
 
-function BookingCard() {
+function Faq() {
   return (
-    <Card className="col-span-3 h-fit p-4">
-      <CardHeader className="p-0">
-        <CardTitle className="font-medium text-md mb-1">Booking Here</CardTitle>
-      </CardHeader>
-      <CardContent className="p-0 font-light text-sm space-y-3 py-2">
-        <div className="space-y-3">
-          <div className="flex justify-between items-center gap-2">
-            <p>Adult (18+ years) $282.00</p>
-            <div className="flex items-center gap-1.5">
-              <Button className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black">
-                <Minus size={14} />
-              </Button>
-              <p>4</p>
-              <Button className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black">
-                <Plus size={14} />
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center gap-2">
-            <p>Youth (13-17 years) $168.00</p>
-            <div className="flex items-center gap-1.5">
-              <Button className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black">
-                <Minus size={14} />
-              </Button>
-              <p>4</p>
-              <Button className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black">
-                <Plus size={14} />
-              </Button>
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center gap-2">
-            <p>Children (0-12 years) $80.00</p>
-            <div className="flex items-center gap-1.5">
-              <Button className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black">
-                <Minus size={14} />
-              </Button>
-              <p>4</p>
-              <Button className="w-6 h-6 rounded-full bg-gray-50 hover:bg-gray-100 border p-0 m-0 text-black">
-                <Plus size={14} />
-              </Button>
-            </div>
-          </div>
-        </div>
-        <Separator />
-        <div className="space-y-2 mb-5">
-          <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
-            Sub Total:
-            <span className="h-fit border-b border-dashed"></span>
-            <strong className="font-semibold">$560</strong>
-          </p>
-          <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
-            Taxes:
-            <strong className="font-semibold">$30</strong>
-          </p>
-
-          <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
-            Total:
-            <span className="w-full h-fit border-b border-dashed"></span>
-            <strong className="font-semibold">$590</strong>
-          </p>
-        </div>
-      </CardContent>
-      <CardFooter className="p-0 mt-5">
-        <Button className="w-full bg-orange-600 hover:bg-orange-500 text-white rounded-lg">
-          Buy now
-        </Button>
-      </CardFooter>
-    </Card>
+    <section>
+      <h3 className="font-semibold text-xl">FAQ</h3>
+      <div className="py-3">
+        <Accordion type="single" collapsible className="w-full space-y-2">
+          <AccordionItem value="item-1" className="border rounded-xl px-3">
+            <AccordionTrigger className="hover:no-underline">
+              Can I get the refund?
+            </AccordionTrigger>
+            <AccordionContent className="font-light">
+              Phang Nga Bay Sea Cave Canoeing & James Bond Island w/ Buffet
+              Lunch by Big Boat cancellation policy: For a full refund, cancel
+              at least 24 hours in advance of the start date of the experience.
+              Discover and book Phang Nga Bay Sea Cave Canoeing & James Bond
+              Island w/ Buffet Lunch by Big Boat
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-2" className="border rounded-xl px-3">
+            <AccordionTrigger className="hover:no-underline">
+              Can I change the travel date?
+            </AccordionTrigger>
+            <AccordionContent className="font-light">
+              No, You can't change the travel date. We are fixed the tour plan
+              including a pre-planed schedule.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+    </section>
   );
 }
