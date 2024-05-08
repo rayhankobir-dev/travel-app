@@ -18,10 +18,10 @@ export default function Home() {
       <TrendingDestinations />
       <FeaturedSection />
       <CampaignSection />
-      <section className="max-w-7xl mx-auto mt-24">
+      <section className="max-w-7xl mx-auto mt-24 px-6 lg:px-0">
         <h2 className="font-semibold text-xl mb-8">Popular things to do</h2>
 
-        <div className="columns-4 gap-2 space-y-2">
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-2 space-y-2">
           <div className="relative">
             <img src={Cruies} className="rounded-lg" />
             <h4 className="w-full absolute bottom-5 left-3 font-light text-md text-white">

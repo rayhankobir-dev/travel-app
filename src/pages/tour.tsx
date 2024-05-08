@@ -39,6 +39,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Dispatch, SetStateAction, useState } from "react";
+import FeaturedSection from "@/components/home/featured-trip-section";
 
 export default function SingleTour() {
   return (
@@ -49,6 +50,7 @@ export default function SingleTour() {
         <TourDetails />
         <BookingCard />
       </div>
+      <FeaturedSection />
     </Fragment>
   );
 }
@@ -305,31 +307,31 @@ function TourServices() {
       <h3 className="font-semibold text-xl">What's included</h3>
       <ul className="grid grid-cols-2 gap-y-2 gap-x-4 py-3">
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           Local taxes
         </li>
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           Hotel pickup and drop-off by air-conditioned minivan
         </li>
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           InsuranceTransfer to a private pier
         </li>
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           Soft drinks
         </li>
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           Towel
         </li>
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           Tips
         </li>
         <li className="inline-flex items-center font-light text-sm">
-          <Dot />
+          <Dot className="min-w-fit" />
           Alcoholic Beverages
         </li>
       </ul>

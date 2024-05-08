@@ -6,7 +6,7 @@ import { Separator } from "../ui/separator";
 
 export default function FilterOptions() {
   return (
-    <Card className="hidden lg:block col-span-3 overflow-hidden rounded-xl">
+    <Card className="col-span-12 lg:col-span-3 overflow-hidden rounded-xl">
       <CardHeader className="space-y-3 bg-orange-600 text-white">
         <div className="space-y-1">
           <p className="font-light text-sm">Where you travel?</p>

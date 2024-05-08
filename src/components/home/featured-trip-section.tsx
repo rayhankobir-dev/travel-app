@@ -9,7 +9,7 @@ export default function FeaturedSection() {
         <Button variant="link">See All</Button>
       </div>
 
-      <div className="">
+      <div className="px-8">
         <FeaturedTrips />
       </div>
     </section>

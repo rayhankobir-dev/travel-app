@@ -39,23 +39,11 @@ export default function Navbar() {
           <img src={Logo} className="h-8" />
           Travela
         </NavLink>
-        <p className="hidden lg:flex font-thin text-sm">
-          Search destinations or activities
-        </p>
+
         <ul className="hidden lg:flex items-center gap-2 font-light text-sm">
           <li>
             <NavLink to="/" className="px-2">
               Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/activities" className="px-2">
-              Popular
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/activities" className="px-2">
-              Destenation
             </NavLink>
           </li>
           <li>

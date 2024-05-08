@@ -9,7 +9,7 @@ import TripCard from "./trip-card";
 
 export function FeaturedTrips() {
   return (
-    <Carousel className="w-full">
+    <Carousel className="w-full max-w-full">
       <CarouselContent className="-ml-1">
         <CarouselItem className="pl-1 md:basis-1/3 lg:basis-1/4">
           <TripCard />
