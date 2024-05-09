@@ -13,26 +13,31 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const locations = [
+type Location = {
+  value: string;
+  label: string;
+};
+
+const locations: Location[] = [
   {
-    value: "next.js",
-    label: "Next.js",
+    value: "dhaka",
+    label: "Dhaka",
   },
   {
-    value: "sveltekit",
-    label: "SvelteKit",
+    value: "sylhet",
+    label: "Sylhet",
   },
   {
-    value: "nuxt.js",
-    label: "Nuxt.js",
+    value: "rajshahi",
+    label: "Rajshahi",
   },
   {
-    value: "remix",
-    label: "Remix",
+    value: "cumilla",
+    label: "Cumilla",
   },
   {
-    value: "astro",
-    label: "Astro",
+    value: "bogura",
+    label: "Bogura",
   },
 ];
 

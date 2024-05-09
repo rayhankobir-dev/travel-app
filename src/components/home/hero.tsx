@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { Separator } from "../ui/separator";
 import { RangeDatePicker } from "../ui/custom-date-picker";
-import { LocationComboBox } from "./combo";
+import { LocationComboBox } from "./location-combobox";
 
 export default function Hero() {
   return (
