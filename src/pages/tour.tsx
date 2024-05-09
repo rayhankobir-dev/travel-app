@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
+  Calendar,
   Clock,
   Dot,
-  Languages,
   MapPin,
   Minus,
   PersonStanding,
@@ -136,7 +136,7 @@ function ImageGallery() {
 
 function Statstics() {
   return (
-    <section className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 mb-10">
+    <section className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 mb-10 gap-3">
       <div className="flex items-center gap-3">
         <p className="h-12 w-12 inline-flex justify-center items-center rounded-lg border">
           <Clock size={20} />
@@ -169,11 +169,11 @@ function Statstics() {
 
       <div className="flex items-center gap-3">
         <p className="h-12 w-12 inline-flex justify-center items-center rounded-lg border">
-          <Languages size={20} />
+          <Calendar size={20} />
         </p>
         <div className="space-y-0.5">
-          <h4 className="font-medium text-sm">Languages</h4>
-          <p className="font-light text-sm">English, Japanese</p>
+          <h4 className="font-medium text-sm">Tour duration</h4>
+          <p className="font-light text-sm">May 23, 2024 - May 30, 2024</p>
         </div>
       </div>
     </section>
