@@ -189,6 +189,8 @@ function TourDetails() {
       <Separator className="my-6" />
       <TourServices />
       <Separator className="my-6" />
+      <TourTimeline />
+      <Separator className="my-6" />
       <Faq />
     </section>
   );
@@ -363,6 +365,48 @@ function TourServices() {
           Alcoholic Beverages
         </li>
       </ul>
+    </section>
+  );
+}
+
+function TourTimeline() {
+  return (
+    <section>
+      <h3 className="font-semibold text-xl">Activities</h3>
+
+      <div className="px-4 py-5">
+        <ol className="relative border-s border-dashed border-orange-600">
+          <li className="mb-10 ms-6">
+            <div className="absolute w-6 h-6 bg-orange-600 rounded-full -start-3"></div>
+            <h4 className="text-sm font-medium">
+              Day 1: Pick up from Airport.
+            </h4>
+          </li>
+          <li className="mb-10 ms-6">
+            <div className="absolute w-4 h-4 bg-white rounded-full -start-2 border-2 border-orange-600"></div>
+            <h4 className="text-sm font-medium">
+              Day 1: Pick up from Airport.
+            </h4>
+            <p className="text-sm font-light max-w-xl py-1">
+              All of the pages and components are first designed in Figma and we
+              keep a parity between the two versions even as we update the
+              project.
+            </p>
+          </li>
+          <li className="mb-10 ms-6">
+            <div className="absolute w-4 h-4 bg-white rounded-full -start-2 border-2 border-orange-600"></div>
+            <h4 className="text-sm font-medium">
+              Day 1: Pick up from Airport.
+            </h4>
+          </li>
+          <li className="mb-10 ms-6">
+            <div className="absolute w-6 h-6 bg-orange-600 rounded-full -start-3 border border-white"></div>
+            <h4 className="text-sm font-medium leading-none">
+              Day 7: Drop to destination.
+            </h4>
+          </li>
+        </ol>
+      </div>
     </section>
   );
 }

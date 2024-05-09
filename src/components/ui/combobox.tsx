@@ -13,39 +13,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Location } from "../list/filter-options";
 
-type Location = {
-  value: string;
-  label: string;
-};
+interface Props {
+  locations: Location[];
+  selectedLocation: Location | null;
+  setSelectedLocation: (location: Location | null) => void;
+}
 
-const locations: Location[] = [
-  {
-    value: "dhaka",
-    label: "Dhaka",
-  },
-  {
-    value: "sylhet",
-    label: "Sylhet",
-  },
-  {
-    value: "rajshahi",
-    label: "Rajshahi",
-  },
-  {
-    value: "cumilla",
-    label: "Cumilla",
-  },
-  {
-    value: "bogura",
-    label: "Bogura",
-  },
-];
-
-export function ComboBoxResponsive() {
+export function ComboBoxResponsive({
+  locations,
+  selectedLocation,
+  setSelectedLocation,
+}: Props) {
   const [open, setOpen] = React.useState(false);
-  const [selectedLocation, setSelectedLocation] =
-    React.useState<Location | null>(null);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -62,16 +43,22 @@ export function ComboBoxResponsive() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <LocationList setOpen={setOpen} onSelect={setSelectedLocation} />
+        <LocationList
+          locations={locations}
+          setOpen={setOpen}
+          onSelect={setSelectedLocation}
+        />
       </PopoverContent>
     </Popover>
   );
 }
 
 function LocationList({
+  locations,
   setOpen,
   onSelect,
 }: {
+  locations: Location[];
   setOpen: (open: boolean) => void;
   onSelect: (location: Location | null) => void;
 }) {
