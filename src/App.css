@@ -9,3 +9,9 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.faq-section {
+    background: url("./assets/word-map.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
