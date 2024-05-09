@@ -15,6 +15,12 @@ import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import Climbing from "@/assets/climbing.jpeg";
+
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
@@ -34,14 +40,16 @@ export default function Signup() {
         <title>Login Your Account - Soccer Football Drills Platform</title>
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
-      <div className="w-fit bg-green-600 overflow-hidden mx-auto h-fit flex md:grid grid-cols-2 lg:flex items-center justify-center rounded-md border shadow-lg my-10 md:divide-x">
+      <div className="w-fit bg-orange-200 overflow-hidden mx-auto h-fit flex md:grid grid-cols-2 lg:flex items-center justify-center rounded-md border shadow-lg my-10 md:divide-x">
+        <img src={Climbing} className="max-w-sm h-full" />
+
         <div className="w-full h-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800">
           <div className="flex items-center justify-start gap-2">
             <img src={Logo} className="w-16" />
             <h1 className="font-semibold text-3xl text-orange-500">Travella</h1>
           </div>
           <div className="space-y-2 text-start">
-            <h1 className="text-3xl font-bold">Create an account</h1>
+            <h1 className="text-3xl font-bold">Create an Account</h1>
             <p className="text-gray-500 dark:text-gray-400">
               Enter your credentials to access your account
             </p>

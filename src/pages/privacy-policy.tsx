@@ -1,8 +1,8 @@
 export default function PrivacyPolicy() {
   return (
-    <section className="max-w-7xl mx-auto mt-14">
-      <div className="faq-section h-48 flex justify-start items-end">
-        <div className="max-w-4xl w-full mx-auto space-y-2  py-10">
+    <section className="mt-14">
+      <div className="faq-section h-48 flex justify-start items-end bg-gray-50 bg-opacity-20">
+        <div className="max-w-7xl w-full mx-auto space-y-2  py-10 px-6 lg:px-0">
           <h1 className="font-semibold text-3xl">Privacy & Policies</h1>
           <p className="font-light text-sm">
             Find our customer's frequent questions and answers.
@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto font-light mt-5">
+      <div className="max-w-7xl mx-auto font-light mt-5 px-6 lg:px-0">
         User-Friendly Interface: ShareTrip offers a user-friendly and intuitive
         interface that makes it easy for users of all tech-skill levels to
         search for and book flights. Whether you're a seasoned traveller or a

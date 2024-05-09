@@ -48,10 +48,38 @@ export default function SingleTour() {
       <ImageGallery />
       <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-5 mt-10 px-6 lg:px-0">
         <TourDetails />
-        <BookingCard />
+        <div className="hi-fit col-span-12 lg:col-span-3 order-1 lg:order-2 space-y-3">
+          <BookingCard />
+          <SupportCard />
+        </div>
       </div>
       <FeaturedSection />
     </Fragment>
+  );
+}
+
+function SupportCard() {
+  return (
+    <Card className="my-3">
+      <CardHeader className="p-3.5">
+        <CardTitle className="font-medium text-md mb-1">
+          Do you need support?
+        </CardTitle>
+        <p className="font-light text-sm">
+          You can check our customers frequently asked question hope you'll find
+          our answer.
+        </p>
+      </CardHeader>
+      <CardContent className="px-3.5 font-medium text-sm">
+        Note: If you already booked a tour and you want to add more person
+        please tell us our admin.
+      </CardContent>
+      <CardFooter className="px-3.5 pb-3.5">
+        <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg">
+          Chat with admin
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -176,7 +204,7 @@ function BookingCard() {
   const total = subTotal + taxes;
 
   return (
-    <Card className="col-span-12 lg:col-span-3 order-1 lg:order-2 h-fit p-4">
+    <Card className="h-fit p-4">
       <CardHeader className="p-0">
         <CardTitle className="font-medium text-md mb-1">Booking Here</CardTitle>
       </CardHeader>

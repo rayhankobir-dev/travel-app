@@ -1,7 +1,18 @@
 import { NavLink } from "react-router-dom";
 import Logo from "@/assets/logo.png";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -56,21 +67,77 @@ export default function Navbar() {
               FAQ's
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/signup" className="mx-3">
-              Sign up
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/login"
-              className="px-6 py-3 bg-orange-600 hover:bg-orange-500 rounded-full text-white duration-500"
-            >
-              Login
-            </NavLink>
-          </li>
+          {scrolled ? (
+            <li>
+              <ProfileOptions />
+            </li>
+          ) : (
+            <AuthLinks />
+          )}
         </ul>
       </nav>
     </header>
+  );
+}
+
+function AuthLinks() {
+  return (
+    <Fragment>
+      <li>
+        <NavLink to="/signup" className="mx-3">
+          Sign up
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/login"
+          className="px-6 py-3 bg-orange-600 hover:bg-orange-500 rounded-full text-white duration-500"
+        >
+          Login
+        </NavLink>
+      </li>
+    </Fragment>
+  );
+}
+
+function ProfileOptions() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="w-8 h-8">
+          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-48">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <NavLink
+              to="/profile"
+              className="w-full inline-flex justify-between"
+            >
+              Profile
+              <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
+            </NavLink>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <NavLink
+              to="/bookings"
+              className="w-full inline-flex justify-between"
+            >
+              Bookings
+              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+            </NavLink>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="text-rose-500">
+          Log out
+          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

@@ -7,9 +7,9 @@ import {
 
 export default function Faq() {
   return (
-    <section className="w-full max-w-7xl mx-auto mt-14">
-      <div className="faq-section h-48 flex justify-start items-end">
-        <div className="max-w-4xl w-full mx-auto space-y-2  py-10">
+    <section className="w-full mt-14">
+      <div className="faq-section h-48 flex justify-start items-end bg-gray-50 bg-opacity-20 px-6 lg:px-0">
+        <div className="max-w-7xl w-full mx-auto space-y-2  py-10">
           <h1 className="font-semibold text-3xl">FAQ's</h1>
           <p className="font-light text-sm">
             Find our customer's frequent questions and answers.
@@ -20,10 +20,10 @@ export default function Faq() {
       <Accordion
         type="single"
         collapsible
-        className="w-full max-w-4xl mx-auto mt-16 space-y-3"
+        className="w-full max-w-7xl mx-auto mt-16 space-y-3 px-6 lg:px-0"
       >
         <AccordionItem value="item-1" className="border rounded-xl px-4">
-          <AccordionTrigger className="hover:no-underline">
+          <AccordionTrigger className="hover:no-underline text-left">
             <p>
               <strong>প্রশ্ন:</strong> আমার ডেবিট কার্ড আছে। আমি কি ডেবিট কার্ড
               ব্যবহার করে শেয়ারট্রিপ থেকে ফ্লাইট বুক করতে পারবো?
