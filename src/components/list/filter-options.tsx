@@ -6,6 +6,7 @@ import { Separator } from "../ui/separator";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
 import { CheckboxGroup, CheckboxOption } from "./checkbox-group";
+import { PriceSlider } from "../ui/price-slider";
 
 export type Location = {
   value: string;
@@ -35,13 +36,17 @@ const locations: Location[] = [
   },
 ];
 
-const options: CheckboxOption[] = [
+const tourTypes: CheckboxOption[] = [
   { id: "nature", label: "Nature Tours", value: "nature" },
   { id: "adventure", label: "Adventure Tours", value: "adventure" },
   { id: "cultural", label: "Cultural Tours", value: "cultural" },
   { id: "food", label: "Food Tours", value: "food" },
   { id: "cruises", label: "Cruises Tours", value: "cruises" },
   { id: "city", label: "City Tours", value: "city" },
+];
+
+const durations: CheckboxOption[] = [
+  { id: "300", label: "Below 3000", value: "3000" },
 ];
 
 export default function FilterOptions() {
@@ -54,6 +59,8 @@ export default function FilterOptions() {
   });
 
   const [selectedTourType, setSelectedTourType] = useState<string[]>([]);
+  const [price, setPrice] = useState<number>(2500);
+  const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
 
   return (
     <Card className="col-span-12 lg:col-span-3 overflow-hidden rounded-xl">
@@ -73,8 +80,9 @@ export default function FilterOptions() {
       </CardHeader>
       <CardContent className="py-2">
         <div className="py-2 space-y-2">
+          <h4 className="font-medium text-sm">Tour Type</h4>
           <CheckboxGroup
-            options={options}
+            options={tourTypes}
             checkedValues={selectedTourType}
             setCheckedValues={setSelectedTourType}
           />
@@ -82,11 +90,19 @@ export default function FilterOptions() {
         <Separator />
         <div className="py-2">
           <h4 className="font-medium text-sm">Filter price</h4>
+          <div className="mt-2.5 py-2">
+            <PriceSlider maxPrice={25000} price={price} setPrice={setPrice} />
+          </div>
         </div>
         <Separator />
 
-        <div className="py-2">
+        <div className="py-2 space-y-3">
           <h4 className="font-medium text-sm">Duration</h4>
+          <CheckboxGroup
+            options={durations}
+            checkedValues={selectedDurations}
+            setCheckedValues={setSelectedDurations}
+          />
         </div>
       </CardContent>
     </Card>

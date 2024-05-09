@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "../ui/button";
 
 export interface CheckboxOption {
   id: string;
@@ -31,8 +32,7 @@ export function CheckboxGroup({ options }: CheckboxGroupProps) {
   };
 
   return (
-    <div className="py-2 space-y-2">
-      <h4 className="font-medium text-sm">Tour Type</h4>
+    <>
       <div className="space-y-3">
         {(showAllOptions ? options : initialOptions).map((option) => (
           <CheckboxInput
@@ -45,10 +45,15 @@ export function CheckboxGroup({ options }: CheckboxGroupProps) {
           />
         ))}
       </div>
-      <p className="font-medium text-sm text-blue-900" onClick={toggleShowMore}>
-        {showAllOptions ? "See less" : "See more"}
-      </p>
-    </div>
+      {options.length > 5 && (
+        <Button
+          className="w-fit h-fit font-medium text-sm text-blue-900 bg-transparent p-0 hover:bg-transparent "
+          onClick={toggleShowMore}
+        >
+          {showAllOptions ? "See less" : "See more"}
+        </Button>
+      )}
+    </>
   );
 }
 
