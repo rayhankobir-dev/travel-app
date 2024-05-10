@@ -16,20 +16,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import Climbing from "@/assets/climbing.jpeg";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 type LoginFormData = {
+  fullName: string;
   email: string;
   password: string;
 };
+
+const signupSchema = Yup.object().shape({
+  fullName: Yup.string().required("First name required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
 
-  const loginForm = useForm<LoginFormData>();
+  const signupForm = useForm<LoginFormData>({
+    mode: "onTouched",
+    resolver: yupResolver(signupSchema),
+  });
 
   // handle login form submission
-  const onSubmit = async () => {
+  const onSubmit = async (data: any) => {
+    console.error(data);
     setLoading(true);
   };
 
@@ -50,13 +63,13 @@ export default function Signup() {
           </div>
           <div className="space-y-2 text-start">
             <h1 className="text-3xl font-bold">Create an Account</h1>
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="font-light text-gray-500">
               Enter your credentials to access your account
             </p>
           </div>
-          <Form {...loginForm}>
+          <Form {...signupForm}>
             <form
-              onSubmit={onSubmit}
+              onSubmit={signupForm.handleSubmit(onSubmit)}
               className="px-1 space-y-5 w-full relative"
             >
               <Button

@@ -23,7 +23,6 @@ export default function Navbar() {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop;
       if (scrollTop > 0) {
-        console.log("User started scrolling");
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -52,33 +51,30 @@ export default function Navbar() {
           Travela
         </NavLink>
 
-        <ul className="hidden lg:flex items-center gap-2 font-light text-sm">
-          <li>
-            <NavLink to="/" className="px-2">
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/privacy-policy" className="px-2">
-              Privacy & Policies
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/faq" className="px-2">
-              FAQ's
-            </NavLink>
-          </li>
-          {scrolled ? (
+        <ul className="flex items-center gap-2 font-light text-sm">
+          <span className="hidden lg:flex ">
             <li>
-              <ProfileOptions />
+              <NavLink to="/" className="px-2">
+                Home
+              </NavLink>
             </li>
-          ) : (
-            <AuthLinks />
-          )}
+            <li>
+              <NavLink to="/privacy-policy" className="px-2">
+                Privacy & Policies
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/faq" className="px-2">
+                FAQ's
+              </NavLink>
+            </li>
+            {!scrolled && <AuthLinks />}
+          </span>
+          {scrolled && <ProfileOptions />}
+          <div className="lg:hidden">
+            <MobileSidebar />
+          </div>
         </ul>
-        <div className="lg:hidden">
-          <MobileSidebar />
-        </div>
       </nav>
     </header>
   );
