@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { MobileSidebar } from "./mobile-sidebar";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -75,12 +76,15 @@ export default function Navbar() {
             <AuthLinks />
           )}
         </ul>
+        <div className="lg:hidden">
+          <MobileSidebar />
+        </div>
       </nav>
     </header>
   );
 }
 
-function AuthLinks() {
+export function AuthLinks() {
   return (
     <Fragment>
       <li>
