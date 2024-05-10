@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import { Fragment } from "react/jsx-runtime";
-import { useState } from "react";
 
 type SliderProps = React.ComponentProps<typeof Slider>;
 
@@ -18,14 +17,10 @@ export function PriceSlider({
   price,
   setPrice,
 }: PriceSliderProps) {
-  const [value, setValue] = useState(
-    Math.abs((price / (maxPrice - price)) * 100)
-  );
   const defaultPercentage = Math.abs((price / (maxPrice - price)) * 100);
 
   const handleSliderChange = (value: number[]) => {
-    setValue(value[0]);
-    const blendedPrice = (value[0] / 100) * maxPrice;
+    const blendedPrice: number = (value[0] / 100) * maxPrice;
     setPrice(blendedPrice);
   };
 

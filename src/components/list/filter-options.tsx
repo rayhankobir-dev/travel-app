@@ -54,6 +54,9 @@ const durations: CheckboxOption[] = [
 ];
 
 export default function FilterOptions() {
+  const [price, setPrice] = useState<number>(2500);
+  const [selectedTourType, setSelectedTourType] = useState<string[]>([]);
+  const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
@@ -62,9 +65,7 @@ export default function FilterOptions() {
     to: addDays(new Date(), 7),
   });
 
-  const [selectedTourType, setSelectedTourType] = useState<string[]>([]);
-  const [price, setPrice] = useState<number>(2500);
-  const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
+  console.log(price);
 
   return (
     <Card className="col-span-12 lg:col-span-3 overflow-hidden rounded-xl">
