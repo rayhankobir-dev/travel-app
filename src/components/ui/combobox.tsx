@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -16,49 +15,31 @@ import {
 import { Location } from "../list/filter-options";
 
 interface Props {
-  locations: Location[];
-  selectedLocation: Location | null;
-  setSelectedLocation: (location: Location | null) => void;
+  options: Location[];
+  selected: Location | null;
+  setSelected: (value: Location | null) => void;
+  children: React.ReactElement;
 }
 
-export function ComboBoxResponsive({
-  locations,
-  selectedLocation,
-  setSelectedLocation,
-}: Props) {
+export function ComboBox({ options, setSelected, children }: Props) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full justify-start font-light text-black"
-        >
-          {selectedLocation ? (
-            <>{selectedLocation.label}</>
-          ) : (
-            <>Select travel location</>
-          )}
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <LocationList
-          locations={locations}
-          setOpen={setOpen}
-          onSelect={setSelectedLocation}
-        />
+        <ItemList items={options} setOpen={setOpen} onSelect={setSelected} />
       </PopoverContent>
     </Popover>
   );
 }
 
-function LocationList({
-  locations,
+function ItemList({
+  items,
   setOpen,
   onSelect,
 }: {
-  locations: Location[];
+  items: Location[];
   setOpen: (open: boolean) => void;
   onSelect: (location: Location | null) => void;
 }) {
@@ -68,17 +49,17 @@ function LocationList({
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
-          {locations.map((location) => (
+          {items.map((item) => (
             <CommandItem
               disabled={false}
-              key={location.value}
-              value={location.value}
+              key={item.value}
+              value={item.value}
               onSelect={() => {
-                onSelect(location);
+                onSelect(item);
                 setOpen(false);
               }}
             >
-              {location.label}
+              {item.label}
             </CommandItem>
           ))}
         </CommandGroup>

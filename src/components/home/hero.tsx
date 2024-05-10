@@ -2,10 +2,18 @@ import { Clock, Map, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { Separator } from "../ui/separator";
-import { RangeDatePicker } from "../ui/custom-date-picker";
-import { LocationComboBox } from "./location-combobox";
+import { format } from "date-fns";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
+import { ComboBox } from "../ui/combobox";
+import { locations, Location } from "../list/filter-options";
+import { cn } from "@/lib/utils";
+import { RangeDatePicker } from "../ui/range-date-picker";
 
 export default function Hero() {
+  const [date, setDate] = useState<DateRange | undefined>(undefined);
+  const [location, setLocation] = useState<Location | null>(null);
+
   return (
     <>
       <section className="hero-section w-full h-[550px]">
@@ -27,8 +35,20 @@ export default function Hero() {
                   <Map />
                 </span>
                 <div className="flex flex-col text-sm">
-                  <h5>Where</h5>
-                  <LocationComboBox />
+                  <h5>Where?</h5>
+                  <ComboBox
+                    options={locations}
+                    selected={location}
+                    setSelected={setLocation}
+                  >
+                    <p className="w-full justify-start font-thin">
+                      {location ? (
+                        <>{location.label}</>
+                      ) : (
+                        <>Search your travel location</>
+                      )}
+                    </p>
+                  </ComboBox>
                 </div>
               </div>
               <Separator className="lg:hidden opacity-50" />
@@ -37,8 +57,29 @@ export default function Hero() {
                   <Clock />
                 </span>
                 <div className="flex flex-col text-sm">
-                  <h5>When</h5>
-                  <RangeDatePicker />
+                  <h5>When?</h5>
+                  <RangeDatePicker date={date} setDate={setDate}>
+                    <p
+                      id="date"
+                      className={cn(
+                        "min-w-fit justify-start text-left text-black font-thin rounded-lg",
+                        !date && "text-muted-foreground"
+                      )}
+                    >
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, "LLL dd, y")} -{" "}
+                            {format(date.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(date.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Pick your travel date</span>
+                      )}
+                    </p>
+                  </RangeDatePicker>
                 </div>
               </div>
 

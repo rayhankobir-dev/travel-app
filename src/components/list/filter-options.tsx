@@ -1,19 +1,23 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { ComboBoxResponsive } from "../ui/combobox";
-import { DatePickerWithRange } from "../ui/range-date-picker";
+import { ComboBox } from "../ui/combobox";
+import { RangeDatePicker } from "../ui/range-date-picker";
 import { Separator } from "../ui/separator";
 import { DateRange } from "react-day-picker";
-import { addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import { CheckboxGroup, CheckboxOption } from "./checkbox-group";
 import { PriceSlider } from "../ui/price-slider";
+import { Button } from "../ui/button";
+import { CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type Location = {
   value: string;
   label: string;
 };
 
-const locations: Location[] = [
+export const locations: Location[] = [
   {
     value: "dhaka",
     label: "Dhaka",
@@ -67,15 +71,49 @@ export default function FilterOptions() {
       <CardHeader className="space-y-3 bg-orange-600 text-white">
         <div className="space-y-1">
           <p className="font-light text-sm">Where you travel?</p>
-          <ComboBoxResponsive
-            locations={locations}
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
-          />
+          <ComboBox
+            options={locations}
+            selected={selectedLocation}
+            setSelected={setSelectedLocation}
+          >
+            <Button
+              variant="outline"
+              className="w-full justify-start font-light text-black"
+            >
+              {selectedLocation ? (
+                <>{selectedLocation.label}</>
+              ) : (
+                <>Select travel location</>
+              )}
+            </Button>
+          </ComboBox>
         </div>
         <div className="space-y-1">
           <p className="font-light text-sm">When are you traveling?</p>
-          <DatePickerWithRange date={date} setDate={setDate} />
+          <RangeDatePicker date={date} setDate={setDate}>
+            <Button
+              id="date"
+              variant={"outline"}
+              className={cn(
+                "min-w-fit justify-start text-left text-black font-light rounded-lg",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date?.from ? (
+                date.to ? (
+                  <>
+                    {format(date.from, "LLL dd, y")} -{" "}
+                    {format(date.to, "LLL dd, y")}
+                  </>
+                ) : (
+                  format(date.from, "LLL dd, y")
+                )
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </RangeDatePicker>
         </div>
       </CardHeader>
       <CardContent className="py-2">

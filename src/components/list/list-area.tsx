@@ -69,6 +69,7 @@ import Sport1 from "@/assets/sport-1.png";
 import { ArrowRight, Clock, MapPin, Plane } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import { Link } from "react-router-dom";
 
 function PackageItem() {
   return (
@@ -121,9 +122,12 @@ function PackageItem() {
         </p>
         <Button
           variant="outline"
-          className="w-full md:w-fit flex items-center  gap-1 rounded-xl border-orange-500 hover:bg-orange-50 text-orange-600 hover:text-orange-600"
+          className="w-full md:w-fit rounded-xl border-orange-500 hover:bg-orange-50 text-orange-600 hover:text-orange-600"
+          asChild
         >
-          View Details <ArrowRight size={15} />
+          <Link to="/list/slug?=gkk">
+            View Details <ArrowRight size={15} />
+          </Link>
         </Button>
       </CardFooter>
     </Card>
