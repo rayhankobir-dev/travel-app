@@ -51,7 +51,7 @@ export default function Login() {
         <title>Login Your Account - Soccer Football Drills Platform</title>
         <link rel="canonical" href="http://mysite.com/example" />
       </Helmet>
-      <div className="w-fit bg-orange-200 overflow-hidden mx-auto h-fit flex lg:flex items-center justify-center rounded-md border shadow-lg my-10 md:divide-x">
+      <div className="w-fit bg-orange-200 overflow-hidden mx-auto h-fit flex lg:flex items-center justify-center rounded-md lg:border shadow-lg my-10 md:divide-x">
         <img src={Climbing} className="hidden lg:block max-w-sm h-full" />
         <div className="w-full h-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800">
           <div className="flex items-center justify-start gap-2">

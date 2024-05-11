@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -38,10 +39,27 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FeaturedSection from "@/components/home/featured-trip-section";
+import {
+  ClassifiedData,
+  classifyWeather,
+  groupByDate,
+  weather,
+  WeatherData,
+} from "./wather";
+import { cn } from "@/lib/utils";
 
+const place = "Cox's Bazar";
 export default function SingleTour() {
+  useEffect(() => {
+    // fetch(
+    //   "https://api.openweathermap.org/data/2.5/forecast?q=Naogaon&units=metric&appid=e6de7be75ad5fce9bc74bcbee51c17bf"
+    // )
+    //   .then((res) => res.json())
+    //   .then((data) => console.log(data))
+    //   .catch((error) => console.log(error));
+  }, []);
   return (
     <Fragment>
       <TorHead />
@@ -50,6 +68,10 @@ export default function SingleTour() {
         <TourDetails />
         <div className="hi-fit col-span-12 lg:col-span-3 order-1 lg:order-2 space-y-3">
           <BookingCard />
+          <WeatherCard
+            weatherData={groupByDate(weather.list)}
+            city={weather.city}
+          />
           <SupportCard />
         </div>
       </div>
@@ -107,7 +129,7 @@ function TorHead() {
           <Star size={15} /> 4.8 (234)
         </p>
         <p className="inline-flex items-center gap-2 font-thin text-sm">
-          <MapPin size={15} /> 4.8 (234)
+          <MapPin size={15} /> {place}
         </p>
         <p className="inline-flex items-center gap-2 font-thin text-sm">
           <User size={15} /> 23+ people
@@ -119,7 +141,7 @@ function TorHead() {
 
 function ImageGallery() {
   return (
-    <section className="h-fit max-w-7xl mx-auto px-6 lg:px-0">
+    <section className="h-fit max-h-[500px] overflow-hidden max-w-7xl mx-auto px-6 lg:px-0">
       <div className="grid grid-cols-2 gap-2 ">
         <img src={Tour1} className="h-full" />
         <div className="h-full flex flex-col gap-2">
@@ -335,7 +357,7 @@ function TourServices() {
   return (
     <section>
       <h3 className="font-semibold text-xl">What's included</h3>
-      <ul className="grid grid-cols-2 gap-y-2 gap-x-4 py-3">
+      <ul className="grid lg:grid-cols-2 gap-y-2 gap-x-4 py-3">
         <li className="inline-flex items-center font-light text-sm">
           <Dot className="min-w-fit" />
           Local taxes
@@ -410,6 +432,219 @@ function TourTimeline() {
     </section>
   );
 }
+
+import { CiTempHigh } from "react-icons/ci";
+import { WiSunrise } from "react-icons/wi";
+import { WiSunset } from "react-icons/wi";
+import { TbTemperatureCelsius, TbTemperatureSun } from "react-icons/tb";
+import { getTimeFromUnixTimestamp } from "@/lib/lib";
+
+const WeatherCard = ({
+  weatherData,
+  city,
+}: {
+  weatherData: any[];
+  city: any;
+}) => {
+  const [selectedDate, setSelectedDate] = useState<any>(weatherData[0]);
+  const [classifiedWeather, setWeather] = useState<
+    ClassifiedData | undefined
+  >();
+
+  useEffect(() => {
+    setWeather(classifyWeather(selectedDate.data));
+  }, [selectedDate]);
+
+  const handleDateClick = (date: WeatherData) => {
+    setSelectedDate(date);
+  };
+
+  return (
+    <Card className="overflow-hidden">
+      <CardHeader className="p-0 bg-orange-50">
+        <div className="flex justify-around divide-x border-b overflow-hidden">
+          {weatherData.map((item: any, index: number) => (
+            <div
+              key={index}
+              className={cn(
+                "w-full py-3.5 text-center text-xs font-medium cursor-pointer",
+                selectedDate.day === item.day && "bg-orange-500 text-white"
+              )}
+              onClick={() => handleDateClick(item)}
+            >
+              {item.slug}
+            </div>
+          ))}
+        </div>
+      </CardHeader>
+      <CardContent className="py-2 px-3">
+        <div className="flex items-center gap-2 px-4 mb-3">
+          <TbTemperatureSun size={28} />
+          <p className="flex items-center gap-1 font-medium text-2xl">
+            {selectedDate.data[0].main.temp.toFixed(1)} <TbTemperatureCelsius />
+          </p>
+        </div>
+        <div className="flex gap-2 items-center">
+          <img
+            src={`http://openweathermap.org/img/w/${selectedDate.data[0].weather[0].icon}.png`}
+          />
+          <div className="flex flex-col">
+            <h2 className="text-sm font-medium capitalize">
+              {selectedDate.data[0].weather[0].main}
+              {". "}
+              {selectedDate.data[0].weather[0].description}
+            </h2>
+            <p className="text-xs font-light">
+              The high will be {selectedDate.data[0].main.temp_max}°C, the low
+              will be {selectedDate.data[0].main.temp_min}°C.
+            </p>
+          </div>
+        </div>
+        <Separator className="my-2" />
+        <table className="w-full">
+          <thead className="text-sm">
+            <tr>
+              <th>
+                <p className="flex justify-center">
+                  <CiTempHigh />
+                </p>
+              </th>
+              <th className="px-1 font-medium">Morning</th>
+              <th className="px-1 font-medium">Afternon</th>
+              <th className="px-1 font-medium">Evening</th>
+              <th className="px-1 font-medium">Night</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="text-sm font-light text-center h-6">
+              <td className="uppercase font-medium py-2">Temp</td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.morning.temp == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.morning.temp}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.afternoon.temp == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.afternoon.temp}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.evening.temp == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.evening.temp}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.night.temp == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.night.temp}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+            </tr>
+            <tr className="text-sm font-light text-center h-6">
+              <td className="uppercase font-medium">Feels</td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.morning.feels_like == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.morning.feels_like}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+              <td className="text-center">
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.afternoon.feels_like == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.afternoon.feels_like}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.evening.feels_like == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.evening.feels_like}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+              <td>
+                <p className="inline-flex items-center gap-0.5">
+                  {classifiedWeather?.night.feels_like == "" ? (
+                    "-"
+                  ) : (
+                    <>
+                      {classifiedWeather?.night.feels_like}
+                      <TbTemperatureCelsius />
+                    </>
+                  )}
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </CardContent>
+      <Separator />
+      <CardFooter className="grid grid-cols-2 divide-x px-3 py-0">
+        <div className="flex items-center gap-2 py-1.5">
+          <WiSunrise size={34} className="text-orange-500" />
+          <div className="text-sm uppercase">
+            <p className="font-medium">Sunraise</p>
+            <p className="font-light">
+              {getTimeFromUnixTimestamp(city.sunrise)}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 py-1.5">
+          <WiSunset size={34} className="text-orange-600" />
+          <div className="text-sm uppercase">
+            <p className="font-medium">Sunset</p>
+            <p className="font-light">
+              {getTimeFromUnixTimestamp(city.sunset)}
+            </p>
+          </div>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+};
 
 function Faq() {
   return (
