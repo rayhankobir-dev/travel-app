@@ -99,8 +99,11 @@ function SupportCard() {
         please tell us our admin.
       </CardContent>
       <CardFooter className="px-3.5 pb-3.5">
-        <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg">
-          Chat with admin
+        <Button
+          className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-lg"
+          asChild
+        >
+          <Link to="/support">Chat with admin</Link>
         </Button>
       </CardFooter>
     </Card>
@@ -449,6 +452,7 @@ import { WiSunrise } from "react-icons/wi";
 import { WiSunset } from "react-icons/wi";
 import { TbTemperatureCelsius, TbTemperatureSun } from "react-icons/tb";
 import { getTimeFromUnixTimestamp } from "@/lib/lib";
+import { Link } from "react-router-dom";
 
 const WeatherCard = ({
   weatherData,
