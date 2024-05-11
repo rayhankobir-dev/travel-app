@@ -10,11 +10,13 @@ import BeachTour from "@/assets/beach-tours.png";
 import MuseumTour from "@/assets/museum-tour.png";
 import Cruies from "@/assets/cruises.png";
 import Hiking from "@/assets/hiking.png";
+import WhyChoseUs from "@/components/home/why-chose";
 
 export default function Home() {
   return (
     <Fragment>
       <Hero />
+      <WhyChoseUs />
       <TrendingDestinations />
       <FeaturedSection />
       <CampaignSection />

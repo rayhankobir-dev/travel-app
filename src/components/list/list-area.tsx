@@ -70,6 +70,7 @@ import { ArrowRight, Clock, MapPin, Plane } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Link } from "react-router-dom";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
 function PackageItem() {
   return (
@@ -117,8 +118,11 @@ function PackageItem() {
             Aviailable: <span>2 person</span>
           </p>
         </div>
-        <p className="font-thin text-md py-3 lg:py-0">
-          From <strong className="font-medium">$245</strong>
+        <p className="flex items-center gap-1.5 font-thin text-md py-3 lg:py-0">
+          From
+          <strong className="flex items-center font-medium">
+            <FaBangladeshiTakaSign size={13} /> 245
+          </strong>
         </p>
         <Button
           variant="outline"

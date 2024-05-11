@@ -41,6 +41,8 @@ import {
 } from "@/components/ui/accordion";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FeaturedSection from "@/components/home/featured-trip-section";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
+
 import {
   ClassifiedData,
   classifyWeather,
@@ -245,18 +247,23 @@ function BookingCard() {
         <div className="space-y-2 mb-5">
           <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
             Sub Total:
-            <span className="h-fit border-b border-dashed"></span>
-            <strong className="font-semibold">${subTotal}</strong>
+            <strong className="flex items-center font-semibold">
+              <FaBangladeshiTakaSign size={13} /> {subTotal}
+            </strong>
           </p>
           <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
             Taxes:
-            <strong className="font-semibold">${taxes}</strong>
+            <strong className="flex items-center font-semibold">
+              <FaBangladeshiTakaSign size={13} /> {taxes}
+            </strong>
           </p>
 
           <p className="w-full inline-flex justify-between items-center gap-2 font-medium text-sm px-1">
             Total:
             <span className="w-full h-fit border-b border-dashed"></span>
-            <strong className="font-semibold">${total}</strong>
+            <strong className="flex items-center font-semibold">
+              <FaBangladeshiTakaSign size={13} /> {total}
+            </strong>
           </p>
         </div>
       </CardContent>
@@ -282,8 +289,12 @@ function PersonCounter({
 }) {
   return (
     <div className="flex justify-between items-center gap-2">
-      <p>
-        {label} (<strong className="font-medium">${price}</strong>)
+      <p className="flex items-center">
+        {label} (
+        <strong className="flex items-center font-medium">
+          <FaBangladeshiTakaSign size={13} /> {price}
+        </strong>
+        )
       </p>
       <div className="flex items-center gap-1.5">
         <Button
