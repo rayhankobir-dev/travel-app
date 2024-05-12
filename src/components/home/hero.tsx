@@ -1,14 +1,14 @@
+import { locations, Location } from "../tour-grid/filter-options";
+import { RangeDatePicker } from "@/components/ui/range-date-picker";
+import { Separator } from "@/components/ui/separator";
+import { ComboBox } from "@/components/ui/combobox";
 import { Clock, Map, Search } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { DateRange } from "react-day-picker";
 import { Link } from "react-router-dom";
-import { Separator } from "../ui/separator";
 import { format } from "date-fns";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
-import { ComboBox } from "../ui/combobox";
-import { locations, Location } from "../list/filter-options";
 import { cn } from "@/lib/utils";
-import { RangeDatePicker } from "../ui/range-date-picker";
 
 export default function Hero() {
   const [date, setDate] = useState<DateRange | undefined>(undefined);

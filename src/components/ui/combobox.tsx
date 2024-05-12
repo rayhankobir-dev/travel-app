@@ -12,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Location } from "../list/filter-options";
+import { Location } from "../tour-grid/filter-options";
 
 interface Props {
   options: Location[];

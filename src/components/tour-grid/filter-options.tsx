@@ -1,14 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
-import { Card, CardContent, CardHeader } from "../ui/card";
-import { ComboBox } from "../ui/combobox";
-import { RangeDatePicker } from "../ui/range-date-picker";
-import { Separator } from "../ui/separator";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { ComboBox } from "@/components/ui/combobox";
+import { RangeDatePicker } from "@/components/ui/range-date-picker";
+import { Separator } from "@/components/ui/separator";
 import { DateRange } from "react-day-picker";
 import { addDays, format } from "date-fns";
-import { CheckboxGroup, CheckboxOption } from "./checkbox-group";
-import { PriceSlider } from "../ui/price-slider";
-import { Button } from "../ui/button";
+import { CheckboxGroup, CheckboxOption } from "@/components/ui/checkbox-group";
+import { PriceSlider } from "@/components/ui/price-slider";
+import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
