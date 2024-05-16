@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NavLink } from "react-router-dom";
 import Logo from "@/assets/logo.png";
 import { Fragment, useEffect, useState } from "react";
@@ -14,9 +15,11 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MobileSidebar } from "./mobile-sidebar";
+import useAuth from "@/hooks/useAuth";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { user }: any = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,9 +71,9 @@ export default function Navbar() {
                 FAQ's
               </NavLink>
             </li>
-            {!scrolled && <AuthLinks />}
+            {!user && <AuthLinks />}
           </span>
-          {scrolled && <ProfileOptions />}
+          {user && <ProfileOptions />}
           <div className="lg:hidden">
             <MobileSidebar />
           </div>
@@ -101,11 +104,14 @@ export function AuthLinks() {
 }
 
 function ProfileOptions() {
+  const { logout, user }: any = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="w-8 h-8">
-          <AvatarFallback>CN</AvatarFallback>
+        <Avatar className="w-8 h-8 bg-orange-500">
+          <AvatarFallback className="bg-orange-500 text-white">
+            {user.fullName[0]}
+          </AvatarFallback>
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
         </Avatar>
       </DropdownMenuTrigger>
@@ -133,7 +139,7 @@ function ProfileOptions() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-rose-500">
+        <DropdownMenuItem onClick={logout} className="text-rose-500">
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

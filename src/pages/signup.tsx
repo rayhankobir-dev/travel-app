@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Logo from "@/assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
@@ -18,6 +18,9 @@ import { useForm } from "react-hook-form";
 import Climbing from "@/assets/climbing.jpeg";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import useAuth from "@/hooks/useAuth";
+import { publicAxios } from "@/api";
+import toast from "react-hot-toast";
 
 type LoginFormData = {
   fullName: string;
@@ -32,6 +35,7 @@ const signupSchema = Yup.object().shape({
 });
 
 export default function Signup() {
+  const { user }: any = useAuth();
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
 
@@ -42,9 +46,18 @@ export default function Signup() {
 
   // handle login form submission
   const onSubmit = async (data: any) => {
-    console.error(data);
-    setLoading(true);
+    try {
+      setLoading(true);
+      const res = await publicAxios.post("/auth/signup", data);
+      toast.success(res.data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (user) return <Navigate to="/" />;
 
   return (
     <section className="mt-24">

@@ -1,30 +1,39 @@
-import { Route, Routes } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./App.css";
-import Home from "./pages/home";
-import MainLayout from "./components/layout/main-layout";
-import List from "./pages/tour-grid";
-import SingleTour from "./pages/tour-details";
-import Login from "./pages/login";
-import Signup from "./pages/signup";
-import Faq from "./pages/faq";
-import PrivacyPolicy from "./pages/privacy-policy";
-import { ChatGroup } from "./components/chat/chat-group";
+import AppRoutes from "@/routes";
+import useAuth from "./hooks/useAuth";
+import SpinerLoading from "./components/ui/spinner-loading";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
-  return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/faq" element={<Faq />} />
-        <Route path="/support" element={<ChatGroup />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/list" element={<List />} />
-        <Route path="/list/:id" element={<SingleTour />} />
-      </Route>
-    </Routes>
-  );
+  const [loading, setLoading] = useState(true);
+  const { setUser }: any = useAuth();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUser(decoded);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  }, [setUser]);
+  return loading ? <FullPageLoader /> : <AppRoutes />;
 }
 
 export default App;
+
+function FullPageLoader() {
+  return (
+    <div className="h-screen w-full flex justify-center items-center">
+      <SpinerLoading size={30} className="text-orange-600" />
+    </div>
+  );
+}

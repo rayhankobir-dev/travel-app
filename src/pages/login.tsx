@@ -7,10 +7,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Logo from "@/assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,8 @@ import { useForm } from "react-hook-form";
 import Climbing from "@/assets/climbing.jpeg";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import useAuth from "@/hooks/useAuth";
+import SpinerLoading from "@/components/ui/spinner-loading";
 
 type LoginFormData = {
   email: string;
@@ -30,7 +32,7 @@ const loginSchema = Yup.object().shape({
 });
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
+  const { loading, login, user }: any = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(true);
 
   const loginForm = useForm<LoginFormData>({
@@ -39,10 +41,15 @@ export default function Login() {
   });
 
   // handle login form submission
-  const onSubmit = async (data: any) => {
-    console.log(data);
-    setLoading(true);
+  const onSubmit = async (payload: { email: string; password: string }) => {
+    try {
+      login(payload);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  if (user) return <Navigate to="/" />;
 
   return (
     <section className="mt-24">
@@ -142,10 +149,16 @@ export default function Login() {
 
               <Button
                 disabled={loading}
-                className="w-full h-11 rounded-xl bg-orange-600 hover:bg-orange-500"
+                className="w-full h-11 flex gap-2 rounded-xl bg-orange-600 hover:bg-orange-500"
                 type="submit"
               >
-                Login
+                {loading ? (
+                  <SpinerLoading />
+                ) : (
+                  <>
+                    Login <LogIn size={16} />{" "}
+                  </>
+                )}
               </Button>
             </form>
           </Form>
