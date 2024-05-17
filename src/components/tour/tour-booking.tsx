@@ -10,15 +10,35 @@ import PersonCounter from "./person-counter";
 import { Separator } from "../ui/separator";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { Button } from "../ui/button";
+import { authAxios } from "@/api";
 
-export default function BookingCard() {
+interface Props {
+  id?: string;
+  personPrice?: number;
+  tax?: number;
+}
+
+export default function BookingCard({ id, personPrice = 200, tax = 5 }: Props) {
   const [personCount, setPersonCount] = useState<number>(1);
 
-  const personPrice = 280;
-
   const subTotal = personCount * personPrice;
-  const taxes = 0.1 * subTotal;
+  const taxes = (tax / 100) * subTotal;
   const total = subTotal + taxes;
+
+  const handleOrder = async () => {
+    const data = {
+      tourId: id,
+      totalPerson: personCount,
+    };
+
+    try {
+      const res = await authAxios.post("/order/initiate-payment", data);
+      const { redirectUrl } = res.data.data;
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Card className="h-fit p-4">
@@ -59,7 +79,10 @@ export default function BookingCard() {
         </div>
       </CardContent>
       <CardFooter className="p-0 mt-5">
-        <Button className="w-full bg-orange-600 hover:bg-orange-500 text-white rounded-lg">
+        <Button
+          onClick={handleOrder}
+          className="w-full bg-orange-600 hover:bg-orange-500 text-white rounded-lg"
+        >
           Book now
         </Button>
       </CardFooter>

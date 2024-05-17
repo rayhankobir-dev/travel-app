@@ -15,8 +15,8 @@ export default function Support() {
           </div>
         </div>
       </section>
-      <section className="max-w-7xl grid lg:grid-cols-12 gap-5 mx-auto">
-        <div className="col-span-4">
+      <section className="max-w-7xl grid lg:grid-cols-12 gap-5 mx-auto px-6 lg:px-0">
+        <div className="col-span-12 lg:col-span-4">
           <div className="grid border divide-y rounded-lg">
             <div className="flex flex-col items-center p-6">
               <MessageCircleWarning size={40} className="text-orange-600" />
@@ -62,7 +62,7 @@ export default function Support() {
             </div>
           </div>
         </div>
-        <div className="col-span-8">
+        <div className="col-span-12 lg:col-span-8">
           <Chats />
         </div>
       </section>

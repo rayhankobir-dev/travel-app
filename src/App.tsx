@@ -5,6 +5,7 @@ import useAuth from "./hooks/useAuth";
 import SpinerLoading from "./components/ui/spinner-loading";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { authAxios } from "./api";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -16,6 +17,7 @@ function App() {
       try {
         const decoded = jwtDecode(token);
         setUser(decoded);
+        authAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       } catch (error) {
         console.log(error);
       } finally {

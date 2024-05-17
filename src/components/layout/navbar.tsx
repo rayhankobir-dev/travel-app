@@ -137,6 +137,15 @@ function ProfileOptions() {
               <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
             </NavLink>
           </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <NavLink
+              to="/support"
+              className="w-full inline-flex justify-between"
+            >
+              Support
+              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </NavLink>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout} className="text-rose-500">

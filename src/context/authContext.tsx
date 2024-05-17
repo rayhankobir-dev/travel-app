@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, useState } from "react";
-import { authAxios, publicAxios } from "@/api";
+import { authAxios } from "@/api";
 import { JwtPayload } from "jwt-decode";
 import toast from "react-hot-toast";
 
@@ -13,24 +13,12 @@ const AuthProvider = ({ children }: any) => {
   const login = async (credentials: { email: string; password: string }) => {
     try {
       setLoading(true);
-      const res = await publicAxios.post("/auth/login", credentials);
+      const res = await authAxios.post("/auth/login", credentials);
 
       const { token, user } = res.data.data;
       localStorage.setItem("token", token);
       setUser(user);
-
-      authAxios.interceptors.request.use(
-        (config) => {
-          if (!config.headers.Authorization) {
-            config.headers.Authorization = `Bearer ${token}`;
-          }
-
-          return config;
-        },
-        (error) => {
-          return Promise.reject(error);
-        }
-      );
+      authAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       toast.success(res.data.message);
     } catch (error: any) {
       toast.error(error?.response?.data?.message);

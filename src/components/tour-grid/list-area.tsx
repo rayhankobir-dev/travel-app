@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SortsOptions, { SortOption } from "./sort-options";
 import TourItem from "./tour-item";
+import { publicAxios } from "@/api";
+import SpinerLoading from "../ui/spinner-loading";
 
 const sortOptionsLabels: Record<SortOption, string> = {
   ft: "Featured",
@@ -10,22 +12,26 @@ const sortOptionsLabels: Record<SortOption, string> = {
   lh: "Low to High",
 };
 
-const tour = {
-  location: "Cox's Bazar, Bangladesh",
-  title: "Freshment with Paragading 3day | 2night",
-  overview:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos maiores provident consequuntur modi face.!",
-  duration: 4,
-  startDate: "12-2-2024",
-  endDate: "16-2-2024",
-  groupSize: 120,
-  totalBooked: 50,
-  price: 2500,
-  discount: 20,
-};
-
 export default function ListingArea() {
   const [sortBy, setSortBy] = useState<SortOption>("az");
+  const [fetching, setFetching] = useState(true);
+  const [trips, setTrips] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await publicAxios.get("/trip");
+        console.log(res.data.data.trips);
+        setTrips(res.data.data.trips);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setFetching(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <section className="col-span-12 lg:col-span-9">
@@ -42,8 +48,11 @@ export default function ListingArea() {
       </div>
 
       <div className="grid grid-cols-1 gap-2 py-3">
-        <TourItem {...tour} />
-        <TourItem {...tour} />
+        {fetching ? (
+          <SpinerLoading />
+        ) : (
+          trips?.map((trip, index) => <TourItem key={index} trip={trip} />)
+        )}
       </div>
     </section>
   );
