@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Logo from "@/assets/logo.png";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-react";
@@ -34,6 +34,7 @@ const loginSchema = Yup.object().shape({
 export default function Login() {
   const { loading, login, user }: any = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(true);
+  const navigate = useNavigate();
 
   const loginForm = useForm<LoginFormData>({
     mode: "onTouched",
@@ -44,6 +45,7 @@ export default function Login() {
   const onSubmit = async (payload: { email: string; password: string }) => {
     try {
       login(payload);
+      window.history.length > 1 ? window.history.back() : navigate("/");
     } catch (error) {
       console.log(error);
     }

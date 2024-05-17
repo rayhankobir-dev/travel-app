@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   Card,
@@ -11,6 +12,8 @@ import { Separator } from "../ui/separator";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { Button } from "../ui/button";
 import { authAxios } from "@/api";
+import { useNavigate } from "react-router-dom";
+import useAuth from "@/hooks/useAuth";
 
 interface Props {
   id?: string;
@@ -20,21 +23,25 @@ interface Props {
 
 export default function BookingCard({ id, personPrice = 200, tax = 5 }: Props) {
   const [personCount, setPersonCount] = useState<number>(1);
+  const navigate = useNavigate();
+  const { user }: any = useAuth();
 
   const subTotal = personCount * personPrice;
   const taxes = (tax / 100) * subTotal;
   const total = subTotal + taxes;
 
   const handleOrder = async () => {
-    const data = {
-      tourId: id,
-      totalPerson: personCount,
-    };
+    if (!user) {
+      return navigate("/login");
+    }
 
     try {
-      const res = await authAxios.post("/order/initiate-payment", data);
+      const res = await authAxios.post("/order/initiate-payment", {
+        tourId: id,
+        totalPerson: personCount,
+      });
       const { redirectUrl } = res.data.data;
-      window.location.href = redirectUrl;
+      window.open(redirectUrl, "_blank");
     } catch (error) {
       console.log(error);
     }
