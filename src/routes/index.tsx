@@ -11,6 +11,8 @@ import List from "@/pages/tour-grid";
 import SingleTour from "@/pages/tour-details";
 import Profile from "@/pages/profile";
 import { PaymentSuccess } from "@/pages/payment-success";
+import { PaymentFailed } from "@/pages/payment-fail";
+import { PaymentCanceled } from "@/pages/payment-canceled";
 
 export default function AppRoutes() {
   return (
@@ -23,10 +25,12 @@ export default function AppRoutes() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/list" element={<List />} />
         <Route path="/list/:id" element={<SingleTour />} />
-        <Route path="/success/:id" element={<PaymentSuccess />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-failed" element={<PaymentFailed />} />
+          <Route path="/payment-canceled" element={<PaymentCanceled />} />
         </Route>
       </Route>
     </Routes>

@@ -57,17 +57,32 @@ export default function Navbar() {
         <ul className="flex items-center gap-2 font-light text-sm">
           <span className="hidden lg:flex ">
             <li>
-              <NavLink to="/" className="px-2">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  cn("px-2", isActive && "text-orange-600")
+                }
+              >
                 Home
               </NavLink>
             </li>
             <li>
-              <NavLink to="/privacy-policy" className="px-2">
+              <NavLink
+                to="/privacy-policy"
+                className={({ isActive }) =>
+                  cn("px-2", isActive && "text-orange-600")
+                }
+              >
                 Privacy & Policies
               </NavLink>
             </li>
             <li>
-              <NavLink to="/faq" className="px-2">
+              <NavLink
+                to="/faq"
+                className={({ isActive }) =>
+                  cn("px-2", isActive && "text-orange-600")
+                }
+              >
                 FAQ's
               </NavLink>
             </li>
