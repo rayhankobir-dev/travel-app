@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Card,
   CardContent,
@@ -7,52 +8,40 @@ import {
 } from "../ui/card";
 import Chat from "./chat";
 import { BiSupport } from "react-icons/bi";
-import { generateChats } from "./chat-data";
+import { ChatType, generateChats } from "./chat-data";
 import ChatInput from "./chat-input";
 import { socket } from "@/lib/socket";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useAuth from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
 
-export function Chats() {
-  const chats = generateChats();
-
-  const users = [
-    {
-      id: "6644d1795c6b4ad139663baf",
-      fullName: "Rayhan",
-      email: "rayhan@gmail.com",
-      role: "admin",
-    },
-    {
-      id: "6644d18d5c6b4ad139663bb6",
-      fullName: "Raju",
-      email: "raju@gmail.com",
-      role: "user",
-    },
-  ];
+export function ChatGroup() {
+  const [chats, setChats] = useState<ChatType[]>(generateChats());
+  const { user }: any = useAuth();
 
   const handleSendMessage = async (message: string) => {
-    socket.emit("send-message-to-admins", {
-      data: {
-        ...users[1],
-        message,
-      },
+    socket.emit("message", {
+      user,
+      message,
     });
   };
 
   useEffect(() => {
     socket.connect();
-    socket.emit("join-admin");
-    socket.on("rcv", (data) => {
-      console.log(data);
+
+    socket.emit("join", user);
+
+    socket.on("receive-message", (data) => {
+      console.log("Recv:", data);
     });
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [user]);
 
   return (
-    <Card className="w-full mx-auto border">
+    <Card className="w-full mx-auto border" onAuxClick={() => setChats([])}>
       <div className="inline-flex items-center gap-3 p-6">
         <div>
           <BiSupport size={35} className="text-orange-600" />
@@ -64,9 +53,10 @@ export function Chats() {
           <CardDescription className="max-w-xl font-light text-sm">
             Cnnecting your all times support chats.
           </CardDescription>
+          <strong className="capitalize">{user.role}</strong>
         </div>
       </div>
-      <CardContent className="max-h-[80%] h-[26rem] overflow-y-scroll">
+      <CardContent className={cn("max-h-[80%] h-[30rem] overflow-y-scroll")}>
         {chats?.map((chat) => (
           <Chat key={chat.id} {...chat} />
         ))}
@@ -75,5 +65,22 @@ export function Chats() {
         <ChatInput onMessageSend={handleSendMessage} />
       </CardFooter>
     </Card>
+  );
+}
+
+interface ChatsProps {
+  chats: ChatType[];
+  className?: string;
+}
+
+export function Chats({ className, chats }: ChatsProps) {
+  return (
+    <CardContent
+      className={cn("max-h-full h-full overflow-y-scroll", className)}
+    >
+      {chats?.map((chat) => (
+        <Chat key={chat.id} {...chat} />
+      ))}
+    </CardContent>
   );
 }

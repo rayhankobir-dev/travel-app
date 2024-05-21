@@ -1,11 +1,12 @@
-export function generateChats(): {
+export type ChatType = {
   id: number;
   userName: string;
   isAdmin: boolean;
   isOwner: boolean;
   message: string;
   time: string;
-}[] {
+};
+export function generateChats(): ChatType[] {
   const chats = [];
   const userNames = [
     "Alice",

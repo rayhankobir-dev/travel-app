@@ -13,6 +13,11 @@ import Profile from "@/pages/profile";
 import { PaymentSuccess } from "@/pages/payment-success";
 import { PaymentFailed } from "@/pages/payment-fail";
 import { PaymentCanceled } from "@/pages/payment-canceled";
+import AdminSupport from "@/admin/pages/support";
+import AdminLayout from "@/admin/layout/admin-layout";
+import Dashboard from "@/admin/pages/home";
+import AdminRoute from "./admin-route";
+import Error404 from "@/admin/pages/404";
 
 export default function AppRoutes() {
   return (
@@ -31,6 +36,14 @@ export default function AppRoutes() {
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/payment-canceled" element={<PaymentCanceled />} />
+        </Route>
+        <Route path="*" element={<div>Not found</div>} />
+      </Route>
+      <Route element={<AdminRoute />}>
+        <Route path="dashboard" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="support" element={<AdminSupport />} />
+          <Route path="*" element={<Error404 />} />
         </Route>
       </Route>
     </Routes>

@@ -3,9 +3,9 @@
 import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-const PrivateRoute = () => {
+const AdminRoute = () => {
   const { user }: any = useAuth();
-  return user?.role?.name === "admin" ? <Outlet /> : <Navigate to="/" />;
+  return user?.role === "admin" ? <Outlet /> : <Navigate to="/" />;
 };
 
-export default PrivateRoute;
+export default AdminRoute;

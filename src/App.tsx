@@ -4,7 +4,6 @@ import AppRoutes from "@/routes";
 import useAuth from "./hooks/useAuth";
 import SpinerLoading from "./components/ui/spinner-loading";
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
 import { authAxios } from "./api";
 
 function App() {
@@ -14,15 +13,21 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUser(decoded);
-        authAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
+      const fetchProfile = async () => {
+        try {
+          authAxios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${token}`;
+          const res = await authAxios.get("/user/profile");
+          setUser(res.data.data.user);
+        } catch (error) {
+          console.log(error);
+          localStorage.removeItem("token");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchProfile();
     } else {
       setLoading(false);
     }

@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 import { MapPin, MessageCircleWarning, PhoneCall } from "lucide-react";
-import { Chats } from "@/components/chat/chat-group";
+import { ChatGroup } from "@/components/chat/chat-group";
 
 export default function Support() {
   return (
@@ -63,7 +63,7 @@ export default function Support() {
           </div>
         </div>
         <div className="col-span-12 lg:col-span-8">
-          <Chats />
+          <ChatGroup />
         </div>
       </section>
     </Fragment>

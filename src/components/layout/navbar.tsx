@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { MobileSidebar } from "./mobile-sidebar";
 import useAuth from "@/hooks/useAuth";
 
-export default function Navbar() {
+export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const { user }: any = useAuth();
 
@@ -45,7 +45,12 @@ export default function Navbar() {
         scrolled ? "bg-white border-b" : "bg-transparent border-none"
       )}
     >
-      <nav className="max-w-7xl flex justify-between items-center gap-3 mx-auto">
+      <nav
+        className={cn(
+          "flex justify-between items-center gap-3 mx-auto",
+          isAdmin ? "max-w-full lg:px-6" : "max-w-7xl "
+        )}
+      >
         <NavLink
           to="/"
           className="flex items-center gap-2 font-semibold text-xl text-orange-500"
@@ -88,6 +93,7 @@ export default function Navbar() {
             </li>
             {!user && <AuthLinks />}
           </span>
+
           {user && <ProfileOptions />}
           <div className="lg:hidden">
             <MobileSidebar />
@@ -143,24 +149,39 @@ function ProfileOptions() {
               <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
             </NavLink>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <NavLink
-              to="/bookings"
-              className="w-full inline-flex justify-between"
-            >
-              Bookings
-              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </NavLink>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <NavLink
-              to="/support"
-              className="w-full inline-flex justify-between"
-            >
-              Support
-              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </NavLink>
-          </DropdownMenuItem>
+          {user.role === "user" && (
+            <>
+              <DropdownMenuItem asChild>
+                <NavLink
+                  to="/bookings"
+                  className="w-full inline-flex justify-between"
+                >
+                  Bookings
+                  <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                </NavLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <NavLink
+                  to="/support"
+                  className="w-full inline-flex justify-between"
+                >
+                  Support
+                  <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                </NavLink>
+              </DropdownMenuItem>
+            </>
+          )}
+          {user.role === "admin" && (
+            <DropdownMenuItem asChild>
+              <NavLink
+                to="/dashboard"
+                className="w-full inline-flex justify-between"
+              >
+                Go dashboard
+                <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+              </NavLink>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout} className="text-rose-500">
