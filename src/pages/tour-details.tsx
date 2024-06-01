@@ -15,6 +15,7 @@ import { Fragment } from "react/jsx-runtime";
 import { Suspense, useEffect, useState } from "react";
 import { publicAxios } from "@/api";
 import SpinerLoading from "@/components/ui/spinner-loading";
+import SEO from "@/components/ui/seo";
 
 const overview = `The Phi Phi archipelago is a must-visit while in Phuket, and this
 speedboat trip whisks you around the islands in one day. Swim over the
@@ -58,6 +59,8 @@ export default function SingleTour() {
   return (
     <Suspense fallback={<SpinerLoading />}>
       <Fragment>
+        <SEO title={trip?.title} />
+
         <TorHeader
           title="Explore all things to do in Packege"
           place="Cox's Bazar"

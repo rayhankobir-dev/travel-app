@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Form,
   FormControl,
@@ -7,11 +6,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Logo from "@/assets/logo.png";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff, LockKeyhole, LogIn, Mail } from "lucide-react";
-import { Helmet } from "react-helmet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -20,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import useAuth from "@/hooks/useAuth";
 import SpinerLoading from "@/components/ui/spinner-loading";
+import SEO from "@/components/ui/seo";
 
 type LoginFormData = {
   email: string;
@@ -32,20 +31,22 @@ const loginSchema = Yup.object().shape({
 });
 
 export default function Login() {
-  const { loading, login, user }: any = useAuth();
+  const { loading, login, user } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(true);
-  const navigate = useNavigate();
 
   const loginForm = useForm<LoginFormData>({
     mode: "onTouched",
     resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   // handle login form submission
-  const onSubmit = async (payload: { email: string; password: string }) => {
+  const onSubmit = async (payload: LoginFormData) => {
     try {
       login(payload);
-      window.history.length > 1 ? window.history.back() : navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -55,11 +56,7 @@ export default function Login() {
 
   return (
     <section className="mt-24">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Login Your Account - Soccer Football Drills Platform</title>
-        <link rel="canonical" href="http://mysite.com/example" />
-      </Helmet>
+      <SEO title="Login Your Account - Soccer Football Drills Platform" />
       <div className="w-fit bg-orange-200 overflow-hidden mx-auto h-fit flex lg:flex items-center justify-center rounded-md lg:border shadow-lg my-10 md:divide-x">
         <img src={Climbing} className="hidden lg:block max-w-sm h-full" />
         <div className="w-full h-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800">

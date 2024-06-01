@@ -8,10 +8,13 @@ import {
 import PaymentSuccessImg from "@/assets/payment-success.png";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import SEO from "@/components/ui/seo";
 
 export function PaymentSuccess() {
   return (
     <section className="min-h-[80vh] max-w-7xl flex items-center justify-center px-6 lg:px-0 mx-auto">
+      <SEO title="Payment Successfull - GhureAshi" />
+
       <Card className="max-w-sm w-full mt-24 px-3 text-2xl font-semibold border-dashed lg:border-none shadow-none">
         <CardHeader>
           <img src={PaymentSuccessImg} className="max-w-sm mx-auto" />

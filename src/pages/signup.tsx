@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Form,
   FormControl,
@@ -10,8 +9,7 @@ import Logo from "@/assets/logo.png";
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -21,12 +19,15 @@ import * as Yup from "yup";
 import useAuth from "@/hooks/useAuth";
 import { publicAxios } from "@/api";
 import toast from "react-hot-toast";
+import { extractErrorMessage } from "@/lib/lib";
+import { ErrorResponse } from "@/types";
+import SEO from "@/components/ui/seo";
 
-type LoginFormData = {
+interface SignupFormData {
   fullName: string;
   email: string;
   password: string;
-};
+}
 
 const signupSchema = Yup.object().shape({
   fullName: Yup.string().required("First name required"),
@@ -35,23 +36,28 @@ const signupSchema = Yup.object().shape({
 });
 
 export default function Signup() {
-  const { user }: any = useAuth();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(true);
 
-  const signupForm = useForm<LoginFormData>({
+  const signupForm = useForm<SignupFormData>({
     mode: "onTouched",
     resolver: yupResolver(signupSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
   });
 
   // handle login form submission
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: SignupFormData) => {
     try {
       setLoading(true);
       const res = await publicAxios.post("/auth/signup", data);
       toast.success(res.data.message);
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message);
+    } catch (error) {
+      toast.error(extractErrorMessage(error as ErrorResponse));
     } finally {
       setLoading(false);
     }
@@ -61,11 +67,8 @@ export default function Signup() {
 
   return (
     <section className="mt-24">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Login Your Account - Soccer Football Drills Platform</title>
-        <link rel="canonical" href="http://mysite.com/example" />
-      </Helmet>
+      <SEO title="Create Your Account - GhureAshi" />
+
       <div className="w-fit bg-orange-200 overflow-hidden mx-auto h-fit flex lg:flex items-center justify-center rounded-md lg:border shadow-lg my-10 md:divide-x">
         <img src={Climbing} className="hidden lg:block max-w-sm h-full" />
 
@@ -100,7 +103,7 @@ export default function Signup() {
                     <FormItem className="col-span-1 ">
                       <FormControl>
                         <div className="relative">
-                          <Mail className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
+                          <User className="absolute left-3.5 top-3.5 h-5 w-5 text-muted-foreground" />
                           <Input
                             autoComplete="true"
                             className="pl-12 h-12 rounded-xl"

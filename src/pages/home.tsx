@@ -11,10 +11,12 @@ import MuseumTour from "@/assets/museum-tour.png";
 import Cruies from "@/assets/cruises.png";
 import Hiking from "@/assets/hiking.png";
 import WhyChoseUs from "@/components/home/why-chose";
+import SEO from "@/components/ui/seo";
 
 export default function Home() {
   return (
     <Fragment>
+      <SEO title="Home - Explore Tour Packges GureAshi" />
       <Hero />
       <WhyChoseUs />
       <TrendingDestinations />

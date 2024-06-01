@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Card,
   CardContent,
@@ -7,42 +6,80 @@ import {
   CardTitle,
 } from "../ui/card";
 import Chat from "./chat";
+import EmptyConversiationImg from "@/assets/empty conversiation.svg";
 import { BiSupport } from "react-icons/bi";
-import { ChatType, generateChats } from "./chat-data";
 import ChatInput from "./chat-input";
 import { socket } from "@/lib/socket";
 import { useEffect, useState } from "react";
 import useAuth from "@/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import {
+  ChatInputSkeleton,
+  ConversiationsSkeleton,
+} from "../skeleton/chat-skeleton";
+import { authAxios } from "@/api";
+import { IChat } from "@/types";
 
 export function ChatGroup() {
-  const [chats, setChats] = useState<ChatType[]>(generateChats());
-  const { user }: any = useAuth();
+  const [isFetching, setIsFetching] = useState<boolean>(true);
+  const [chats, setChats] = useState<IChat[] | null>(null);
+  const { user } = useAuth();
 
   const handleSendMessage = async (message: string) => {
-    socket.emit("message", {
-      user,
-      message,
-    });
+    if (user?._id) {
+      socket.emit("send-to-admin", {
+        sender: user._id,
+        message,
+      });
+    }
   };
 
   useEffect(() => {
-    socket.connect();
+    async function fetchChats() {
+      if (user?._id) {
+        try {
+          const res = await authAxios.get<{ data: IChat[] }>(
+            `/chats/conversiations/${user._id}`
+          );
+          const conversiations = res.data.data;
+          setChats(conversiations.length > 0 ? conversiations : null);
+        } catch (error) {
+          console.error("Error fetching chats:", error);
+        } finally {
+          setIsFetching(false);
+        }
+      }
+    }
+    fetchChats();
+  }, [user?._id]);
 
-    socket.emit("join", user);
-
-    socket.on("receive-message", (data) => {
-      console.log("Recv:", data);
-    });
-
-    return () => {
-      socket.disconnect();
+  useEffect(() => {
+    const handleMessage = (data: { from: string; chat: IChat }) => {
+      setChats((prev: IChat[] | null) =>
+        prev ? [...prev, data.chat] : [data.chat]
+      );
     };
+
+    socket.on("receive-message", handleMessage);
+    return () => {
+      socket.off("receive-message", handleMessage);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      socket.connect();
+      socket.emit("join", user);
+
+      return () => {
+        socket.disconnect();
+      };
+    }
   }, [user]);
 
   return (
     <Card className="w-full mx-auto border" onAuxClick={() => setChats([])}>
-      <div className="inline-flex items-center gap-3 p-6">
+      <div className="w-full inline-flex items-center gap-3 p-6 border-b">
         <div>
           <BiSupport size={35} className="text-orange-600" />
         </div>
@@ -51,25 +88,26 @@ export function ChatGroup() {
             Customer support
           </CardTitle>
           <CardDescription className="max-w-xl font-light text-sm">
-            Cnnecting your all times support chats.
+            Connecting your all times support chats.
           </CardDescription>
-          <strong className="capitalize">{user.role}</strong>
         </div>
       </div>
       <CardContent className={cn("max-h-[80%] h-[30rem] overflow-y-scroll")}>
-        {chats?.map((chat) => (
-          <Chat key={chat.id} {...chat} />
-        ))}
+        {isFetching ? <ConversiationsSkeleton /> : <Chats chats={chats} />}
       </CardContent>
-      <CardFooter>
-        <ChatInput onMessageSend={handleSendMessage} />
+      <CardFooter className="py-4 border-t">
+        {isFetching ? (
+          <ChatInputSkeleton />
+        ) : (
+          <ChatInput onMessageSend={handleSendMessage} />
+        )}
       </CardFooter>
     </Card>
   );
 }
 
 interface ChatsProps {
-  chats: ChatType[];
+  chats: IChat[] | null;
   className?: string;
 }
 
@@ -78,9 +116,19 @@ export function Chats({ className, chats }: ChatsProps) {
     <CardContent
       className={cn("max-h-full h-full overflow-y-scroll", className)}
     >
-      {chats?.map((chat) => (
-        <Chat key={chat.id} {...chat} />
-      ))}
+      {chats ? (
+        chats.map((chat) => <Chat key={chat._id} chat={chat} />)
+      ) : (
+        <div className="h-full flex flex-col justify-center items-center ">
+          <img
+            src={EmptyConversiationImg}
+            className="max-w-48 px-3 text-sm py-4 mx-auto"
+          />
+          <p className="text-sm font-light text-orange-600">
+            No available conversiations.
+          </p>
+        </div>
+      )}
     </CardContent>
   );
 }

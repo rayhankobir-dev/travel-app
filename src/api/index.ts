@@ -1,14 +1,9 @@
 // src/api/axios.js
 import axios from "axios";
-
-const BASE_URL = "http://localhost:3000/api/v1";
+const baseURL = import.meta.env.VITE_API_URL;
 
 // Public Axios instance
-export const publicAxios = axios.create({
-  baseURL: BASE_URL,
-});
+export const publicAxios = axios.create({ baseURL });
 
 // Authenticated Axios instance
-export const authAxios = axios.create({
-  baseURL: BASE_URL,
-});
+export const authAxios = axios.create({ baseURL });

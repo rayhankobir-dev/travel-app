@@ -8,10 +8,12 @@ import {
 import { IoIosSad } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import SEO from "@/components/ui/seo";
 
 export function PaymentFailed() {
   return (
     <section className="min-h-[80vh] max-w-7xl flex items-center justify-center px-6 lg:px-0 mx-auto">
+      <SEO title="Payment Successfull - GhureAshi" />
       <Card className="max-w-sm w-full mt-24 px-3 text-2xl font-semibold border-dashed lg:border-none shadow-none">
         <CardHeader>
           <div className="w-24 h-24 flex justify-center items-center bg-rose-100 rounded-full mx-auto">

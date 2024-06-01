@@ -1,4 +1,9 @@
-import { ClassifiedData, GroupedDataItem, WeatherData } from "@/types";
+import {
+  ClassifiedData,
+  ErrorResponse,
+  GroupedDataItem,
+  WeatherData,
+} from "@/types";
 
 export function getTimeFromUnixTimestamp(unixTimestamp: number): string {
   const date = new Date(unixTimestamp * 1000);
@@ -64,4 +69,19 @@ export const classifyWeather = (data: WeatherData[]): ClassifiedData => {
   });
 
   return classifiedData;
+};
+
+export const extractErrorMessage = (error: ErrorResponse) => {
+  if (
+    error &&
+    error.response &&
+    error.response.data &&
+    error.response.data.message
+  ) {
+    return error.response.data.message;
+  }
+  if (error && error.message) {
+    return error.message;
+  }
+  return "Something went wrong";
 };

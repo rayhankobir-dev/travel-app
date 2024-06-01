@@ -15,12 +15,12 @@ import { ClassifiedData, WeatherData } from "@/types";
 import { Separator } from "../ui/separator";
 import { weatherData } from "@/pages/wather";
 import { Skeleton } from "../ui/skeleton";
+const API_KEY = import.meta.env.OPEN_WEATHER_API_KEY;
 
 interface Props {
   location: string;
 }
 
-const API_KEY = "e6de7be75ad5fce9bc74bcbee51c17bf";
 const unit = "metric";
 
 export default function WeatherForcast({ location = "Naogaon" }: Props) {

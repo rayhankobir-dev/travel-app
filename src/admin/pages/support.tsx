@@ -1,43 +1,68 @@
-import { generateChats } from "@/components/chat/chat-data";
-import { Chats } from "@/components/chat/chat-group";
-import ChatInput from "@/components/chat/chat-input";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ChatUserList } from "@/admin/components/support/chat-user-list";
+import { useEffect, useState } from "react";
+import { socket } from "@/lib/socket";
+import useAuth from "@/hooks/useAuth";
+import Conversiations from "@/components/chat/conversiations";
+import { authAxios } from "@/api";
+import { IChatUser } from "@/types";
+import {
+  AdminChatSkeleton,
+  AdminChatUserListSkeleton,
+} from "@/components/skeleton/chat-skeleton";
 
 export default function AdminSupport() {
-  const chats = generateChats();
-  return (
-    <main className="h-full flex border rounded-lg">
-      <section className="w-48 border-r">
-        <div className="fixed h-full w-48 divide-y overflow-y-scroll">
-          <ChatUser />
-          <ChatUser />
-          <ChatUser />
-        </div>
-      </section>
-      <section className="flex-1 flex flex-col py-2 overflow-y-scroll">
-        <div className="px-4 py-1">
-          <h2 className="text-lg font-medium">Raju Rayhan</h2>
-          <p className="font-light text-sm">Trip: Tour in Cox's Bazar 3day</p>
-        </div>
-        <Chats className="" chats={chats} />
-        <div className="px-4">
-          <ChatInput onMessageSend={() => console.log("sent")} />
-        </div>
-      </section>
-    </main>
-  );
-}
+  const [isFetching, setIsFetching] = useState<boolean>(true);
+  const [userLists, setUserLists] = useState<IChatUser[] | null>(null);
+  const [activeUser, setActiveUser] = useState<IChatUser | null>(null);
+  const { user } = useAuth();
 
-export function ChatUser() {
+  async function getUserLists() {
+    try {
+      const res = await authAxios.get<{ data: { users: IChatUser[] } }>(
+        "/chats/conversiations"
+      );
+      const users = res.data.data.users;
+      setUserLists(users.length > 0 ? users : null);
+    } catch (error) {
+      console.error("Error fetching user lists:", error);
+    } finally {
+      setIsFetching(false);
+    }
+  }
+
+  useEffect(() => {
+    getUserLists();
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      socket.connect();
+      socket.emit("join", user);
+      socket.on("receive-message", getUserLists);
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [user]);
+
   return (
-    <div className="flex items-center gap-2 px-2 py-1.5 hover:bg-orange-50 active:bg-orange-50 cursor-pointer">
-      <Avatar className="w-8 h-8">
-        <AvatarFallback className="bg-orange-400 text-white">F</AvatarFallback>
-      </Avatar>
-      <div className="flex flex-col gap-0.5">
-        <h2 className="font-medium text-sm leading-none">Raju Rayhan</h2>
-        <small className="font-light uppercase">12:45 pm</small>
-      </div>
-    </div>
+    <main className="h-full flex border rounded-lg overflow-hidden">
+      {isFetching ? (
+        <AdminChatUserListSkeleton />
+      ) : (
+        <ChatUserList
+          activeUser={activeUser}
+          setActive={setActiveUser}
+          chatList={userLists}
+        />
+      )}
+      {isFetching ? (
+        <AdminChatSkeleton />
+      ) : activeUser ? (
+        <Conversiations activeUser={activeUser} />
+      ) : (
+        <AdminChatSkeleton />
+      )}
+    </main>
   );
 }

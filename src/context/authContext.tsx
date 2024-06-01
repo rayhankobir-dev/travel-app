@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext, useState } from "react";
 import { authAxios } from "@/api";
-import { JwtPayload } from "jwt-decode";
 import toast from "react-hot-toast";
+import { AuthContextType, ErrorResponse, LoginFormData, User } from "@/types";
+import { extractErrorMessage } from "@/lib/lib";
 
-const AuthContext = createContext({});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AuthProvider = ({ children }: any) => {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<JwtPayload | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = async (credentials: { email: string; password: string }) => {
+  const login = async (credentials: LoginFormData) => {
     try {
       setLoading(true);
       const res = await authAxios.post("/auth/login", credentials);
@@ -20,8 +20,8 @@ const AuthProvider = ({ children }: any) => {
       setUser(user);
       authAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       toast.success(res.data.message);
-    } catch (error: any) {
-      toast.error(error?.response?.data?.message);
+    } catch (error) {
+      toast.error(extractErrorMessage(error as ErrorResponse));
     } finally {
       setLoading(false);
     }

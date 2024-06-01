@@ -1,10 +1,13 @@
 import { Fragment } from "react/jsx-runtime";
 import { MapPin, MessageCircleWarning, PhoneCall } from "lucide-react";
 import { ChatGroup } from "@/components/chat/chat-group";
+import SEO from "@/components/ui/seo";
 
 export default function Support() {
   return (
     <Fragment>
+      <SEO title="Support - GhureAshi Client Support" />
+
       <section className="mt-14">
         <div className="faq-section h-48 flex justify-start items-end bg-gray-50 bg-opacity-20 px-6 lg:px-0">
           <div className="max-w-7xl w-full mx-auto space-y-2  py-10">

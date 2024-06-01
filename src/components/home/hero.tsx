@@ -83,7 +83,10 @@ export default function Hero() {
                 </div>
               </div>
 
-              <Button className="h-12 w-full lg:w-12 p-2 rounded-xl lg:rounded-full text-white bg-orange-600 hover:bg-orange-500 duration-300">
+              <Button
+                asChild
+                className="h-12 w-full lg:w-12 p-2 rounded-xl lg:rounded-full text-white bg-orange-600 hover:bg-orange-500 duration-300"
+              >
                 <Link to="/list" className="inline-flex items-center gap-3">
                   <p className="lg:hidden text-lg font-medium">Find</p>
                   <Search />

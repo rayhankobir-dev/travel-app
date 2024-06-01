@@ -1,6 +1,9 @@
+import SEO from "@/components/ui/seo";
+
 export default function PrivacyPolicy() {
   return (
     <section className="mt-14">
+      <SEO title="Privacy & Policies - GhureAshi" />
       <div className="faq-section h-48 flex justify-start items-end bg-gray-50 bg-opacity-20">
         <div className="max-w-7xl w-full mx-auto space-y-2  py-10 px-6 lg:px-0">
           <h1 className="font-semibold text-3xl">Privacy & Policies</h1>
