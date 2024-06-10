@@ -17,7 +17,7 @@ export default function AdminLayout() {
             <Sidebar className="h-full w-full bg-white" />
           </ResizablePanel>
           <ResizableHandle />
-          <ResizablePanel defaultSize={82} className="h-[calc(100%_-4rem)] p-2">
+          <ResizablePanel defaultSize={82} className="h-[calc(100%_-4rem)]">
             <Outlet />
           </ResizablePanel>
         </ResizablePanelGroup>

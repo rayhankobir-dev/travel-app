@@ -29,7 +29,7 @@ export default function TourItem({ trip }: { trip: Props }) {
         </div>
       </CardHeader>
 
-      <CardContent className="flex flex-col justify-between px-3 md:px-5 pb-1.5 md:py-5">
+      <CardContent className="w-full flex flex-col justify-between px-3 md:px-5 pb-1.5 md:py-5">
         <div className="space-y-1">
           <p className="inline-flex items-center gap-2 font-thin text-sm">
             <MapPin size={15} /> <span>{trip.location?.location}</span>
@@ -74,7 +74,7 @@ export default function TourItem({ trip }: { trip: Props }) {
         </p>
         <Button
           variant="outline"
-          className="w-full md:w-fit rounded-xl border-orange-500 hover:bg-orange-50 text-orange-600 hover:text-orange-600"
+          className="w-full md:w-fit rounded-lg border-orange-500 hover:bg-orange-50 text-orange-600 hover:text-orange-600"
           asChild
         >
           <Link to={`/list/slug?=${trip._id}`}>

@@ -15,7 +15,7 @@ import {
   MdOutlineCancelScheduleSend,
   MdOutlineRunningWithErrors,
 } from "react-icons/md";
-
+import { MdOutlineRoomService } from "react-icons/md";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import React, { Fragment } from "react";
@@ -92,7 +92,7 @@ export function Sidebar({ className }: Props) {
               <Fragment>
                 <NavLink
                   end={true}
-                  to="/dashboard/transactions"
+                  to="/dashboard/trips"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -105,7 +105,7 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/bookings"
+                  to="/dashboard/trips/bookings"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -118,7 +118,7 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/highlights"
+                  to="/dashboard/trips/highlights"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -131,7 +131,7 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/trip/locations"
+                  to="/dashboard/trips/locations"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -144,7 +144,20 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/trip/activities"
+                  to="/dashboard/trips/services"
+                  className={({ isActive }) =>
+                    cn(
+                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
+                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
+                    )
+                  }
+                >
+                  <MdOutlineRoomService className="mr-2 h-4 w-4" />
+                  <span>Services</span>
+                </NavLink>
+                <NavLink
+                  end={true}
+                  to="/dashboard/trips/activities"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -157,7 +170,7 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/trip/faqs"
+                  to="/dashboard/trips/faqs"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",

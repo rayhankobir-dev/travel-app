@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
+import { DataTable } from "@/components/ui/data-table";
 export type Payment = {
   id: string;
   amount: number;
@@ -52,6 +53,10 @@ const data: Payment[] = [
 ];
 
 export default function Customers() {
+  useEffect(() => {
+    (() => {})();
+  }, []);
+
   const columns: ColumnDef<Payment>[] = [
     {
       id: "select",
@@ -145,8 +150,8 @@ export default function Customers() {
     },
   ];
   return (
-    <div>
+    <main className="p-3">
       <DataTable columns={columns} data={data} searchBy="email" />
-    </div>
+    </main>
   );
 }

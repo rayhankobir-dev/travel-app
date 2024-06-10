@@ -20,6 +20,13 @@ import AdminRoute from "./admin-route";
 import Error404 from "@/admin/pages/404";
 import Users from "@/admin/pages/admins";
 import Customers from "@/admin/pages/customers";
+import AllTrips from "@/admin/pages/all-trips";
+import Bookings from "@/admin/pages/bookings";
+import Faqs from "@/admin/pages/faqs";
+import Activities from "@/admin/pages/activities";
+import Highlights from "@/admin/pages/lightlisghts";
+import Locations from "@/admin/pages/locations";
+import Services from "@/admin/pages/services";
 
 export default function AppRoutes() {
   return (
@@ -46,7 +53,15 @@ export default function AppRoutes() {
           <Route index element={<Dashboard />} />
           <Route path="admins" element={<Users />} />
           <Route path="customers" element={<Customers />} />
-          <Route path="support" element={<AdminSupport />} />
+          <Route path="trips">
+            <Route index element={<AllTrips />} />
+            <Route path="bookings" element={<Bookings />} />
+            <Route path="faqs" element={<Faqs />} />
+            <Route path="highlights" element={<Highlights />} />
+            <Route path="services" element={<Services />} />
+            <Route path="locations" element={<Locations />} />
+            <Route path="activities" element={<Activities />} />
+          </Route>
           <Route path="support" element={<AdminSupport />} />
           <Route path="*" element={<Error404 />} />
         </Route>
