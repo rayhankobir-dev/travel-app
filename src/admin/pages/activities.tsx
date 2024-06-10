@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Breadcrumb from "@/components/ui/custom-breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -27,36 +22,33 @@ import * as Yup from "yup";
 import { Input } from "@/components/ui/input";
 import { toast } from "react-hot-toast";
 
-interface LocationFormData {
-  location: string;
-  country: string;
+interface ActivityFormData {
+  title: string;
+  description: string;
 }
 
-interface Location {
+interface Activity {
   _id: string;
-  location: string;
-  country: string;
-  countryCode?: string;
-  lan?: string;
-  lat?: string;
+  title: string;
+  description: string;
   createdAt: string;
   updatedAt: string;
 }
 
 const schema = Yup.object().shape({
-  location: Yup.string().required("Location name is required"),
-  country: Yup.string().required("Country is required"),
+  title: Yup.string().required("Title is required"),
+  description: Yup.string().required("Description is required"),
 });
 
 export default function Activities() {
   const [isFetching, setIsFetching] = useState(true);
-  const [locations, setActivities] = useState<Location[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   useEffect(() => {
     async function fetchActivities() {
       try {
         const res = await authAxios.get("/activities");
-        setActivities(res.data.data.locations);
+        setActivities(res.data.data.activities);
       } catch (error) {
         console.error(error);
       } finally {
@@ -66,16 +58,16 @@ export default function Activities() {
     fetchActivities();
   }, []);
 
-  const form = useForm<LocationFormData>({
+  const form = useForm<ActivityFormData>({
     mode: "onTouched",
     resolver: yupResolver(schema),
-    defaultValues: { location: "", country: "" },
+    defaultValues: { title: "", description: "" },
   });
 
-  const onSubmit = async (payload: LocationFormData) => {
+  const onSubmit = async (payload: ActivityFormData) => {
     try {
       const res = await authAxios.post("/activities", payload);
-      setActivities((prev) => [...prev, res.data.data.location]);
+      setActivities((prev) => [...prev, res.data.data.activity]);
       form.reset();
       toast.success(res.data.message);
     } catch (error) {
@@ -90,7 +82,7 @@ export default function Activities() {
     try {
       const res = await authAxios.delete("/activities", { data });
       setActivities(
-        (prev) => prev?.filter((location) => location._id !== id) || null
+        (prev) => prev?.filter((activity) => activity._id !== id) || null
       );
       toast.success(res.data.message);
     } catch (error: any) {
@@ -119,7 +111,7 @@ export default function Activities() {
               >
                 <div className="w-full grid grid-cols-2 items-start gap-2 ">
                   <FormField
-                    name="location"
+                    name="title"
                     render={({ field }) => (
                       <FormItem className="col-span-1">
                         <FormControl>
@@ -128,7 +120,7 @@ export default function Activities() {
                             <Input
                               autoComplete="true"
                               className="pl-12 h-12 rounded-lg"
-                              placeholder="Place name"
+                              placeholder="Activity title"
                               {...field}
                             />
                           </div>
@@ -139,7 +131,7 @@ export default function Activities() {
                   />
 
                   <FormField
-                    name="country"
+                    name="description"
                     render={({ field }) => (
                       <FormItem className="col-span-1">
                         <FormControl>
@@ -148,7 +140,7 @@ export default function Activities() {
                             <Input
                               autoComplete="true"
                               className="pl-12 h-12 rounded-lg"
-                              placeholder="Country name"
+                              placeholder="Activity description"
                               {...field}
                             />
                           </div>
@@ -182,12 +174,16 @@ export default function Activities() {
               <SpinerLoading />
             ) : (
               <div className="grid grid-cols-3 gap-2">
-                {locations.length > 0 ? (
-                  locations.map((location) => (
-                    <LocationCard key={location._id} location={location} />
+                {activities.length > 0 ? (
+                  activities.map((activity) => (
+                    <LocationCard
+                      key={activity._id}
+                      activity={activity}
+                      handleDelete={handleDelete}
+                    />
                   ))
                 ) : (
-                  <p>No locations</p>
+                  <p>No activities</p>
                 )}
               </div>
             )}
@@ -198,33 +194,26 @@ export default function Activities() {
   );
 }
 
-function LocationCard({ location }: { location: Location }) {
+function LocationCard({
+  activity,
+  handleDelete,
+}: {
+  activity: Activity;
+  handleDelete: (id: string) => void;
+}) {
   return (
     <Card>
-      <CardHeader>Delete</CardHeader>
+      <Button
+        onClick={() => handleDelete(activity._id)}
+        className="absolute top-2.5 left-2.5 h-fit w-fit p-1.5 bg-red-50 text-red-500 hover:bg-red-100"
+        size="icon"
+      >
+        <Trash2 size={14} />
+      </Button>
       <CardContent>
-        <h3>{location.location}</h3>
-        <h3>{location.country}</h3>
-        <h3>{location.countryCode}</h3>
-        <h3>{location.lat}</h3>
-        <h3>{location.lan}</h3>
+        <h3>{activity.title}</h3>
+        <h3>{activity.description}</h3>
       </CardContent>
     </Card>
-  );
-}
-
-interface FaqDeleteBtnProps {
-  handleDelete: () => void;
-}
-
-function FaqDeleteBtn({ handleDelete }: FaqDeleteBtnProps) {
-  return (
-    <Button
-      onClick={handleDelete}
-      className="absolute top-2.5 left-2.5 h-fit w-fit p-1.5 bg-red-50 text-red-500 hover:bg-red-100"
-      size="icon"
-    >
-      <Trash2 size={14} />
-    </Button>
   );
 }

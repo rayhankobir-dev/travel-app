@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Breadcrumb from "@/components/ui/custom-breadcrumb";
 import { Separator } from "@/components/ui/separator";
@@ -48,7 +49,7 @@ const schema = Yup.object().shape({
 
 export default function Faqs() {
   const [isFetching, setIsFetching] = useState(true);
-  const [questions, setQuestions] = useState<Question[] | null>(null);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
     async function fetchFaqs() {
@@ -76,10 +77,7 @@ export default function Faqs() {
   const onSubmit = async (payload: QuestionFormData) => {
     try {
       const res = await authAxios.post("/faqs", payload);
-      setQuestions((prevQuestions) => [
-        ...prevQuestions,
-        res.data.data.question,
-      ]);
+      setQuestions((prev) => [...prev, res.data.data.question]);
       form.reset();
     } catch (error) {
       console.error(error);
@@ -97,7 +95,7 @@ export default function Faqs() {
           prevQuestions?.filter((question) => question._id !== id) || null
       );
       toast.success(res.data.message);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error?.message);
       toast.error(error?.message);
     }
@@ -184,7 +182,7 @@ export default function Faqs() {
             <Accordion type="single" collapsible className="w-full space-y-2">
               {isFetching ? (
                 <SpinerLoading />
-              ) : questions && questions.length > 0 ? (
+              ) : questions.length > 0 ? (
                 questions.map((question) => (
                   <AccordionItem
                     key={question._id}
