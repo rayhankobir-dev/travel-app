@@ -36,7 +36,7 @@ export default function BookingCard({ id, personPrice = 200, tax = 5 }: Props) {
     }
 
     try {
-      const res = await authAxios.post("/order/initiate-payment", {
+      const res = await authAxios.post("/orders/initiate-payment", {
         tourId: id,
         totalPerson: personCount,
       });
