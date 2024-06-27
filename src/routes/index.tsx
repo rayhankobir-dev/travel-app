@@ -13,20 +13,19 @@ import Profile from "@/pages/profile";
 import { PaymentSuccess } from "@/pages/payment-success";
 import { PaymentFailed } from "@/pages/payment-fail";
 import { PaymentCanceled } from "@/pages/payment-canceled";
-import AdminSupport from "@/admin/pages/support";
-import AdminLayout from "@/admin/layout/admin-layout";
-import Dashboard from "@/admin/pages/home";
-import AdminRoute from "./admin-route";
 import Error404 from "@/admin/pages/404";
 import Users from "@/admin/pages/admins";
 import Customers from "@/admin/pages/customers";
 import AllTrips from "@/admin/pages/all-trips";
 import Bookings from "@/admin/pages/bookings";
-import Faqs from "@/admin/pages/faqs";
-import Activities from "@/admin/pages/activities";
-import Highlights from "@/admin/pages/lightlisghts";
 import Locations from "@/admin/pages/locations";
-import Services from "@/admin/pages/services";
+import AdminSupport from "@/admin/pages/support";
+import AdminLayout from "@/admin/layout/admin-layout";
+import Dashboard from "@/admin/pages/home";
+import AdminRoute from "./admin-route";
+import CreateTrip from "@/admin/pages/create-trips";
+import Transations from "@/admin/pages/transactions";
+import Refunds from "@/admin/pages/refunds";
 
 export default function AppRoutes() {
   return (
@@ -37,8 +36,8 @@ export default function AppRoutes() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/list" element={<List />} />
-        <Route path="/list/:id" element={<SingleTour />} />
+        <Route path="/trips" element={<List />} />
+        <Route path="/trips/:slug" element={<SingleTour />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/support" element={<Support />} />
@@ -46,8 +45,9 @@ export default function AppRoutes() {
           <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/payment-canceled" element={<PaymentCanceled />} />
         </Route>
-        <Route path="*" element={<Error404 />} />
+        <Route path="*" element={<Error404 redirectUrl="/" />} />
       </Route>
+
       <Route element={<AdminRoute />}>
         <Route path="dashboard" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
@@ -55,15 +55,18 @@ export default function AppRoutes() {
           <Route path="customers" element={<Customers />} />
           <Route path="trips">
             <Route index element={<AllTrips />} />
+            <Route path="create" element={<CreateTrip />} />
             <Route path="bookings" element={<Bookings />} />
-            <Route path="faqs" element={<Faqs />} />
-            <Route path="highlights" element={<Highlights />} />
-            <Route path="services" element={<Services />} />
             <Route path="locations" element={<Locations />} />
-            <Route path="activities" element={<Activities />} />
+          </Route>
+
+          <Route path="payment">
+            <Route path="transactions" element={<Transations />} />
+            <Route path="refunds" element={<Refunds />} />
+            <Route path="cancelled" element={<Locations />} />
           </Route>
           <Route path="support" element={<AdminSupport />} />
-          <Route path="*" element={<Error404 />} />
+          <Route path="*" element={<Error404 redirectUrl="/" />} />
         </Route>
       </Route>
     </Routes>

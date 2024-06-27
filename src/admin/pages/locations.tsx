@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Breadcrumb from "@/components/ui/custom-breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Globe, MapPin, Trash2 } from "lucide-react";
 import { BsFillPatchQuestionFill } from "react-icons/bs";
 
 import { useEffect, useState } from "react";
@@ -80,10 +80,10 @@ export default function Locations() {
 
   const handleDelete = async (id: string) => {
     const data = {
-      highlightId: id,
+      locationId: id,
     };
     try {
-      const res = await authAxios.delete("/highlights", { data });
+      const res = await authAxios.delete("/locations", { data });
       setLocations(
         (prev) => prev?.filter((location) => location._id !== id) || null
       );
@@ -176,7 +176,7 @@ export default function Locations() {
             {isFetching ? (
               <SpinerLoading />
             ) : (
-              <div className="grid grid-cols-3 gap-2">
+              <div className="flex flex-wrap gap-2">
                 {locations.length > 0 ? (
                   locations.map((location) => (
                     <LocationCard
@@ -205,20 +205,24 @@ function LocationCard({
   handleDelete: (id: string) => void;
 }) {
   return (
-    <Card className="relative">
+    <Card className="relative min-w-48 group">
       <Button
         onClick={() => handleDelete(location._id)}
-        className="absolute top-2.5 left-2.5 h-fit w-fit p-1.5 bg-red-50 text-red-500 hover:bg-red-100"
+        className="hidden group-hover:block absolute top-2.5 right-2.5 h-fit w-fit p-1.5 bg-red-50 text-red-500 hover:bg-red-100"
         size="icon"
       >
         <Trash2 size={14} />
       </Button>
-      <CardContent>
-        <h3>{location.location}</h3>
-        <h3>{location.country}</h3>
-        <h3>{location.countryCode}</h3>
-        <h3>{location.lat}</h3>
-        <h3>{location.lan}</h3>
+      <CardContent className="p-2.5">
+        <h1 className="font-medium text-md mb-2">Location: </h1>
+        <div className="flex items-center gap-1.5 font-light text-sm">
+          <MapPin size={15} />
+          <p className="font-thin">{location.location}</p>
+        </div>
+        <div className="flex items-center gap-1.5 font-light text-sm">
+          <Globe size={15} />
+          <p className="font-thin">{location.country}</p>
+        </div>
       </CardContent>
     </Card>
   );

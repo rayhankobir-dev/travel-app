@@ -56,7 +56,7 @@ export default function Navbar({ isAdmin = false }: { isAdmin?: boolean }) {
           className="flex items-center gap-2 font-semibold text-xl text-orange-500"
         >
           <img src={Logo} className="h-8" />
-          Travela
+          Ghure Ashi
         </NavLink>
 
         <ul className="flex items-center gap-2 font-light text-sm">

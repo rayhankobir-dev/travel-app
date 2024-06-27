@@ -3,7 +3,7 @@ import { Award, Gem, SailboatIcon, Ticket } from "lucide-react";
 export default function WhyChoseUs() {
   return (
     <section className="max-w-7xl mx-auto px-6 lg:px-0">
-      <h2 className="font-semibold text-xl mb-8">Why choose Travela</h2>
+      <h2 className="font-semibold text-xl mb-8">Why choose Ghure Ashi</h2>
 
       <div className="grid grid-cols-4 gap-2">
         <div className="flex flex-col gap-2">

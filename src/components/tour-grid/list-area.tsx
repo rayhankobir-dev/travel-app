@@ -4,9 +4,9 @@ import TourItem from "./tour-item";
 import { publicAxios } from "@/api";
 import { Skeleton } from "../ui/skeleton";
 import { Separator } from "../ui/separator";
+import { useSearchParams } from "react-router-dom";
 
 const sortOptionsLabels: Record<SortOption, string> = {
-  ft: "Featured",
   az: "A to Z",
   za: "Z to A",
   hl: "High to Low",
@@ -14,14 +14,30 @@ const sortOptionsLabels: Record<SortOption, string> = {
 };
 
 export default function ListingArea() {
-  const [sortBy, setSortBy] = useState<SortOption>("az");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  console.log(searchParams);
+
+  const [sortBy, setSortBy] = useState<SortOption>(
+    (searchParams.get("sort") as SortOption) || "az"
+  );
   const [fetching, setFetching] = useState(true);
   const [trips, setTrips] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await publicAxios.get("/trips");
+        setFetching(true);
+
+        const params = {
+          location: searchParams.get("location"),
+          from: searchParams.get("from"),
+          to: searchParams.get("to"),
+          price: searchParams.get("price"),
+          sort: searchParams.get("sort"),
+        };
+
+        const res = await publicAxios.get("/trips", { params });
         setTrips(res.data.data.trips);
       } catch (error) {
         console.log(error);
@@ -31,12 +47,18 @@ export default function ListingArea() {
     };
 
     fetchData();
-  }, []);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("sort", sortBy);
+    setSearchParams(params);
+  }, [searchParams, setSearchParams, sortBy]);
 
   return (
     <section className="col-span-12 lg:col-span-9">
       <div className="flex justify-between gap-2">
-        <p className="font-light text-sm">1362 results</p>
+        <p className="font-light text-sm">{trips.length} results</p>
         <div className="inline-flex items-center gap-2 font-light text-sm">
           Sort by:
           <SortsOptions

@@ -18,7 +18,7 @@ export default function SectionHeader() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>List</BreadcrumbPage>
+              <BreadcrumbPage>Trips</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

@@ -55,6 +55,10 @@ export interface User {
   fullName: string;
   email: string;
   role: "admin" | "user";
+  age?: number;
+  dob?: Date;
+  phone?: string;
+  address?: string;
 }
 
 export interface AuthContextType {
@@ -86,3 +90,61 @@ export interface IChatUser {
   role: "user";
   lastMessagedAt: string;
 }
+
+export type Image = {
+  _id: string;
+  url: string;
+};
+
+export type Location = {
+  _id: string;
+  location: string;
+  country: string;
+};
+
+export type Activity = {
+  title: string;
+  description?: string;
+};
+
+export type Faq = {
+  question: string;
+  answer: string;
+};
+
+export type Trip = {
+  _id: string;
+  title: string;
+  slug: string;
+  overview: string;
+  location: Location;
+  cost: number;
+  discount: number;
+  tax: number;
+  groupSize: number;
+  minAge: number;
+  maxAge: number;
+  startedAt: Date;
+  endedAt: Date;
+  images: Image[];
+  highlights: string[];
+  services: string[];
+  activities: Activity[];
+  faqs: Faq[];
+};
+
+export type Transaction = {
+  _id: string;
+  transactionId: string;
+  bankTransactionId: string;
+  transactionType: "payment" | "refund";
+  currency: string;
+  amount: number;
+  storeAmount?: number;
+  paymentMethod?: string;
+  status: "SUCCESS" | "FAILED";
+  refundReason?: string;
+  refundRefId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

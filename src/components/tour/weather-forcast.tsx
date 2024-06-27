@@ -7,7 +7,7 @@ import {
   groupByDate,
 } from "@/lib/lib";
 import { CiTempHigh } from "react-icons/ci";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { WiSunrise } from "react-icons/wi";
 import { WiSunset } from "react-icons/wi";
 import { cn } from "@/lib/utils";
@@ -15,35 +15,33 @@ import { ClassifiedData, WeatherData } from "@/types";
 import { Separator } from "../ui/separator";
 import { weatherData } from "@/pages/wather";
 import { Skeleton } from "../ui/skeleton";
-const API_KEY = import.meta.env.OPEN_WEATHER_API_KEY;
+import { Location } from "@/types";
+const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 
 interface Props {
-  location: string;
+  location: Location;
+  unit?: "metric" | "imperial";
 }
 
-const unit = "metric";
-
-export default function WeatherForcast({ location = "Naogaon" }: Props) {
+export default function WeatherForcast({ location, unit = "metric" }: Props) {
   const [weather, setWeather] = useState<any>(weatherData);
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=${unit}&appid=${API_KEY}`;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  console.log(location);
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location?.location}&units=${unit}&appid=${API_KEY}`;
 
   useEffect(() => {
     fetch("url")
       .then((res) => res.json())
       .then((data) => setWeather(data))
-      .catch((error) => console.log(error));
+      .catch((error) => setError(error));
+
+    setLoading(false);
   }, [url]);
-  return (
-    <Suspense fallback={<WeatherCardSkeleton />}>
-      {weather ? (
-        <WeatherCard
-          weatherData={groupByDate(weather.list)}
-          city={weather.city}
-        />
-      ) : (
-        <WeatherCardSkeleton />
-      )}
-    </Suspense>
+  return loading || error ? (
+    <WeatherCardSkeleton />
+  ) : (
+    <WeatherCard weatherData={groupByDate(weather.list)} city={weather.city} />
   );
 }
 

@@ -1,21 +1,25 @@
 import { cn } from "@/lib/utils";
 
 interface Props {
-  isStart: boolean;
-  isEnd: boolean;
+  isStart?: boolean;
+  isEnd?: boolean;
   title: string;
   description?: string | null;
-  order?: string | null;
 }
 export default function TourActivity({
   isStart,
   isEnd,
   title,
   description,
-  order,
 }: Props) {
   return (
-    <li className={cn("ms-6", order, isStart && "mb-10", isEnd && "mt-5")}>
+    <li
+      className={cn(
+        "ms-6",
+        isStart && "mb-10 order-first",
+        isEnd && "mt-5 order-last"
+      )}
+    >
       <div
         className={cn(
           "absolute w-4 h-4 bg-orange-600 rounded-full -start-2",

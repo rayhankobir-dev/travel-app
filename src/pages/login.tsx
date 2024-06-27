@@ -62,7 +62,9 @@ export default function Login() {
         <div className="w-full h-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800">
           <div className="flex items-center justify-start gap-2">
             <img src={Logo} className="w-16" />
-            <h1 className="font-semibold text-3xl text-orange-600">Travella</h1>
+            <h1 className="font-semibold text-3xl text-orange-600">
+              Ghure Ashi
+            </h1>
           </div>
           <div className="space-y-2 text-start">
             <h1 className="text-3xl font-bold">Login Your Account</h1>

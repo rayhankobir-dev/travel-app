@@ -8,8 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
-export type SortOption = "ft" | "az" | "za" | "hl" | "lh";
+export type SortOption = "az" | "za" | "hl" | "lh";
 
 interface Props {
   options: Record<SortOption, string>;
@@ -18,6 +20,21 @@ interface Props {
 }
 
 export default function SortOptions({ options, selected, setSelected }: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const sort = searchParams.get("sort") as SortOption;
+    if (sort) {
+      setSelected(sort);
+    }
+  }, [searchParams, setSelected]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set("sort", selected);
+    setSearchParams(params);
+  }, [selected, searchParams, setSearchParams]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="block p-0 focus:border-none outline-none">

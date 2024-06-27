@@ -1,5 +1,6 @@
+import { baseURL } from "@/api";
 import { io } from "socket.io-client";
-export const url = "https://travella-api.vercel.app";
+export const url = baseURL;
 
 export const socket = io(url, {
   autoConnect: false,

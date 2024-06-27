@@ -1,29 +1,18 @@
+import { Faq } from "@/types";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "../ui/accordion";
-const faqs = [
-  {
-    questionId: 1,
-    question: "How are you?",
-    answer: "I'm fine thank you",
-  },
-  {
-    questionId: 2,
-    question: "Can I get the refund?",
-    answer: "I'm fine thank you",
-  },
-];
 
-export default function TourFaq() {
+export default function TourFaq({ faqs }: { faqs: Faq[] }) {
   return (
     <section>
       <h3 className="font-semibold text-xl">FAQ</h3>
       <div className="py-3">
         <Accordion type="single" collapsible className="w-full space-y-2">
-          {faqs.map((faq, index) => (
+          {faqs?.map((faq, index: number) => (
             <AccordionItem
               key={index}
               value={`item-${index}`}

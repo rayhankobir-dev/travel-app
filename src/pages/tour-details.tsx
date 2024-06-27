@@ -10,96 +10,85 @@ import ImageGallery from "@/components/tour/tour-gallery";
 import BookingCard from "@/components/tour/tour-booking";
 import SupportCard from "@/components/tour/support-card";
 import TourStatstics from "@/components/tour/tour-statstics";
-import TorHeader from "@/components/tour/tour-header";
+import TourHeader from "@/components/tour/tour-header";
 import { Fragment } from "react/jsx-runtime";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { publicAxios } from "@/api";
-import SpinerLoading from "@/components/ui/spinner-loading";
+import SpinnerLoading from "@/components/ui/spinner-loading";
 import SEO from "@/components/ui/seo";
-
-const overview = `The Phi Phi archipelago is a must-visit while in Phuket, and this
-speedboat trip whisks you around the islands in one day. Swim over the
-coral reefs of Pileh Lagoon, have lunch at Phi Phi Leh, snorkel at
-Bamboo Island, and visit Monkey Beach and Maya Bay, immortalized in "The
-Beach." Boat transfers, snacks, buffet lunch, snorkeling equipment, and
-Phuket hotel pickup and drop-off all included.`;
-
-interface TripData {
-  _id: string;
-  title: string;
-  overview: string;
-  location: object;
-  cost: number;
-  tax: number;
-  startedAt: string;
-  endedAt: string;
-  activities?: object[];
-  faqs?: object[];
-  highlights?: object[];
-}
+import { Trip } from "@/types";
+import { useParams } from "react-router-dom";
+import Error404 from "@/admin/pages/404";
 
 export default function SingleTour() {
-  const [trip, setTrip] = useState<TripData | undefined>(undefined);
+  const [trip, setTrip] = useState<Trip | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const { slug } = useParams();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await publicAxios.get("/trip");
-        console.log(res.data.data.trips);
-        setTrip(res.data.data.trips[0]);
+        const res = await publicAxios.get(`/trips/${slug}`);
+        setTrip(res.data.data.trip);
       } catch (error) {
         console.log(error);
       } finally {
-        console.log("something");
+        setLoading(false);
       }
     };
-
     fetchData();
-  }, []);
+  }, [slug]);
 
-  return (
-    <Suspense fallback={<SpinerLoading />}>
-      <Fragment>
-        <SEO title={trip?.title} />
+  return loading ? (
+    <div className="h-screen w-full flex justify-center items-center ">
+      <SpinnerLoading />
+    </div>
+  ) : (
+    <Fragment>
+      {trip && (
+        <>
+          <SEO title={trip.title} description={trip.overview} />
 
-        <TorHeader
-          title="Explore all things to do in Packege"
-          place="Cox's Bazar"
-          rating={4.8}
-          totalRatedUser={234}
-          totalPeopleEnrolled={500}
-        />
-        <ImageGallery />
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-5 mt-10 px-6 lg:px-0">
-          <section className="max-w-7xl mx-auto col-span-12 lg:col-span-9 order-2 lg:order-1">
-            <TourStatstics
-              duration={4}
-              groupSize={120}
-              minAge={18}
-              maxAge={40}
-              startDate="May 2, 2024"
-              endDate="May 20, 2024"
-            />
-            <TourOverview overview={overview} />
-            <TourHighLights />
-            <Separator className="my-6" />
-            <TourServices />
-            <Separator className="my-6" />
-            <TourTimeline />
-            <Separator className="my-6" />
-            <TourFaq />
-          </section>
-          <div className="hi-fit col-span-12 lg:col-span-3 order-1 lg:order-2 space-y-3">
-            <BookingCard
-              id={trip?._id}
-              personPrice={trip?.cost}
-              tax={trip?.tax}
-            />
-            <WeatherForcast location="Naogaon" />
-            <SupportCard />
+          <TourHeader
+            title={trip.title}
+            location={trip.location}
+            totalBooked={trip.groupSize}
+          />
+          <ImageGallery images={trip.images} />
+          <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-5 mt-10 px-6 lg:px-0">
+            <section className="max-w-7xl mx-auto col-span-12 lg:col-span-9 order-2 lg:order-1">
+              <TourStatstics
+                duration={4}
+                groupSize={trip.groupSize}
+                minAge={trip.minAge}
+                maxAge={trip.maxAge}
+                startDate={trip.startedAt}
+                endDate={trip.endedAt}
+              />
+              <TourOverview overview={trip.overview} />
+              <TourHighLights highlights={trip.highlights} />
+              <Separator className="my-6" />
+              <TourServices services={trip.services} />
+              <Separator className="my-6" />
+              <TourTimeline activities={trip.activities} />
+              <Separator className="my-6" />
+              <TourFaq faqs={trip.faqs} />
+            </section>
+            <div className="hi-fit col-span-12 lg:col-span-3 order-1 lg:order-2 space-y-3">
+              <BookingCard
+                id={trip._id}
+                personPrice={trip.cost}
+                tax={trip.tax}
+              />
+              <WeatherForcast location={trip.location} />
+              <SupportCard />
+            </div>
           </div>
-        </div>
-        <FeaturedSection />
-      </Fragment>
-    </Suspense>
+          <FeaturedSection />
+        </>
+      )}
+
+      {!trip && <Error404 title="Trip not found" redirectUrl="/" />}
+    </Fragment>
   );
 }

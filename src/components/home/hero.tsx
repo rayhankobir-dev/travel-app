@@ -1,4 +1,3 @@
-import { locations, Location } from "../tour-grid/filter-options";
 import { RangeDatePicker } from "@/components/ui/range-date-picker";
 import { Separator } from "@/components/ui/separator";
 import { ComboBox } from "@/components/ui/combobox";
@@ -9,10 +8,30 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { publicAxios } from "@/api";
 
 export default function Hero() {
   const [date, setDate] = useState<DateRange | undefined>(undefined);
-  const [location, setLocation] = useState<Location | null>(null);
+  const [location, setLocation] = useState(null);
+
+  async function fetchLocations() {
+    const res = await publicAxios.get("/locations");
+    return res.data.data.locations;
+  }
+
+  const constructQueryParams = () => {
+    const params = new URLSearchParams();
+    if (location) {
+      params.append("location", location.location);
+    }
+    if (date?.from) {
+      params.append("from", format(date.from, "yyyy-MM-dd"));
+    }
+    if (date?.to) {
+      params.append("to", format(date.to, "yyyy-MM-dd"));
+    }
+    return params.toString();
+  };
 
   return (
     <>
@@ -37,13 +56,15 @@ export default function Hero() {
                 <div className="flex flex-col text-sm">
                   <h5>Where?</h5>
                   <ComboBox
-                    options={locations}
+                    label="location"
+                    value="_id"
+                    options={fetchLocations}
                     selected={location}
                     setSelected={setLocation}
                   >
                     <p className="w-full justify-start font-thin">
                       {location ? (
-                        <>{location.label}</>
+                        <>{location.location}</>
                       ) : (
                         <>Search your travel location</>
                       )}
@@ -87,7 +108,10 @@ export default function Hero() {
                 asChild
                 className="h-12 w-full lg:w-12 p-2 rounded-xl lg:rounded-full text-white bg-orange-600 hover:bg-orange-500 duration-300"
               >
-                <Link to="/list" className="inline-flex items-center gap-3">
+                <Link
+                  to={`/trips?${constructQueryParams()}`}
+                  className="inline-flex items-center gap-3"
+                >
                   <p className="lg:hidden text-lg font-medium">Find</p>
                   <Search />
                 </Link>

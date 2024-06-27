@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import {
   Card,
@@ -24,7 +23,7 @@ interface Props {
 export default function BookingCard({ id, personPrice = 200, tax = 5 }: Props) {
   const [personCount, setPersonCount] = useState<number>(1);
   const navigate = useNavigate();
-  const { user }: any = useAuth();
+  const { user } = useAuth();
 
   const subTotal = personCount * personPrice;
   const taxes = (tax / 100) * subTotal;
@@ -36,7 +35,7 @@ export default function BookingCard({ id, personPrice = 200, tax = 5 }: Props) {
     }
 
     try {
-      const res = await authAxios.post("/orders/initiate-payment", {
+      const res = await authAxios.post("/bookings/make-payment", {
         tourId: id,
         totalPerson: personCount,
       });

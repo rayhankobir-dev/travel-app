@@ -39,8 +39,8 @@ export function MobileSidebar() {
               onClick={() => setOpen(false)}
               className="w-full h-14 inline-flex items-center gap-2 border-b px-4 text-orange-600"
             >
-              <img src={Logo} alt="Travella" />
-              <p className="italic font-semibold text-lg">Travella</p>
+              <img src={Logo} alt="Ghure Ashi" />
+              <p className="italic font-semibold text-lg">Ghure Ashi</p>
             </Link>
             <div className="h-[80%] overflow-y-scroll flex flex-col justify-between py-2 px-4">
               <div className="">

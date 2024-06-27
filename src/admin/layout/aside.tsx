@@ -2,26 +2,17 @@
 
 import { cn } from "@/lib/utils";
 import { NavLink } from "react-router-dom";
-import {
-  Activity,
-  BaggageClaim,
-  Gauge,
-  Map,
-  ShoppingBag,
-  Users,
-} from "lucide-react";
+import { BaggageClaim, Gauge, Map, ShoppingBag, Users } from "lucide-react";
 import { TbCreditCardRefund, TbPlayFootball } from "react-icons/tb";
 import {
   MdOutlineCancelScheduleSend,
   MdOutlineRunningWithErrors,
 } from "react-icons/md";
-import { MdOutlineRoomService } from "react-icons/md";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import React, { Fragment } from "react";
 import { RiCustomerServiceFill } from "react-icons/ri";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PiHighlighterFill, PiSealQuestionBold } from "react-icons/pi";
 
 import {
   Collapsible,
@@ -118,19 +109,6 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/trips/highlights"
-                  className={({ isActive }) =>
-                    cn(
-                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
-                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
-                    )
-                  }
-                >
-                  <PiHighlighterFill className="mr-2 h-4 w-4" />
-                  <span>Highlights</span>
-                </NavLink>
-                <NavLink
-                  end={true}
                   to="/dashboard/trips/locations"
                   className={({ isActive }) =>
                     cn(
@@ -141,45 +119,6 @@ export function Sidebar({ className }: Props) {
                 >
                   <Map className="mr-2 h-4 w-4" />
                   <span>Locations</span>
-                </NavLink>
-                <NavLink
-                  end={true}
-                  to="/dashboard/trips/services"
-                  className={({ isActive }) =>
-                    cn(
-                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
-                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
-                    )
-                  }
-                >
-                  <MdOutlineRoomService className="mr-2 h-4 w-4" />
-                  <span>Services</span>
-                </NavLink>
-                <NavLink
-                  end={true}
-                  to="/dashboard/trips/activities"
-                  className={({ isActive }) =>
-                    cn(
-                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
-                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
-                    )
-                  }
-                >
-                  <Activity className="mr-2 h-4 w-4" />
-                  <span>Activities</span>
-                </NavLink>
-                <NavLink
-                  end={true}
-                  to="/dashboard/trips/faqs"
-                  className={({ isActive }) =>
-                    cn(
-                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
-                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
-                    )
-                  }
-                >
-                  <PiSealQuestionBold className="mr-2 h-4 w-4" />
-                  <span>FAQ's</span>
                 </NavLink>
               </Fragment>
             </UserLinks>
@@ -192,7 +131,7 @@ export function Sidebar({ className }: Props) {
               <Fragment>
                 <NavLink
                   end={true}
-                  to="/dashboard/trips"
+                  to="/dashboard/payment/transactions"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -205,7 +144,7 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/refunds"
+                  to="/dashboard/payment/refunds"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
@@ -218,7 +157,7 @@ export function Sidebar({ className }: Props) {
                 </NavLink>
                 <NavLink
                   end={true}
-                  to="/dashboard/canceled"
+                  to="/dashboard/payment/canceled"
                   className={({ isActive }) =>
                     cn(
                       "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",

@@ -1,12 +1,13 @@
 import { Calendar, Clock, PersonStanding, User } from "lucide-react";
+import { format } from "date-fns";
 
 interface Props {
   duration: number;
   groupSize: number;
   minAge: number;
   maxAge: number;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 }
 export default function TourStatstics({
   duration,
@@ -57,7 +58,7 @@ export default function TourStatstics({
         <div className="space-y-0.5">
           <h4 className="font-medium text-sm">Tour duration</h4>
           <p className="font-light text-sm">
-            {startDate} - {endDate}
+            {format(startDate, "PP")} - {format(endDate, "PP")}
           </p>
         </div>
       </div>

@@ -11,48 +11,27 @@ import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { DataTable } from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-];
+import { useEffect, useState } from "react";
+import { authAxios } from "@/api";
+import { User } from "@/types";
+import BreadcrumbView from "@/components/ui/custom-breadcrumb";
 
 export default function Users() {
-  const columns: ColumnDef<Payment>[] = [
+  const [users, setUsers] = useState<User[] | []>([]);
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const res = await authAxios.get("/user?role=admin");
+        setUsers(res.data.users);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchUsers();
+  }, []);
+
+  const columns: ColumnDef<User>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -76,10 +55,10 @@ export default function Users() {
       enableHiding: false,
     },
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "fullName",
+      header: "Full name",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
+        <div className="capitalize">{row.getValue("fullName")}</div>
       ),
     },
     {
@@ -100,25 +79,30 @@ export default function Users() {
       ),
     },
     {
-      accessorKey: "amount",
-      header: () => <div className="text-right">Amount</div>,
+      accessorKey: "role",
+      header: () => <div className="text-center">Role</div>,
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("amount"));
-
-        // Format the amount as a dollar amount
-        const formatted = new Intl.NumberFormat("en-US", {
-          style: "currency",
-          currency: "USD",
-        }).format(amount);
-
-        return <div className="text-right font-medium">{formatted}</div>;
+        return (
+          <div className="text-center font-medium">{row.getValue("role")}</div>
+        );
+      },
+    },
+    {
+      accessorKey: "phone",
+      header: () => <div className="text-center">Phone</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="text-center font-medium">
+            {row.getValue("phone") || "--"}
+          </div>
+        );
       },
     },
     {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const payment = row.original;
+        const user = row.original;
 
         return (
           <DropdownMenu>
@@ -131,13 +115,11 @@ export default function Users() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}
+                onClick={() => navigator.clipboard.writeText(user._id)}
               >
-                Copy payment ID
+                Delete
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -145,8 +127,19 @@ export default function Users() {
     },
   ];
   return (
-    <div>
-      <DataTable columns={columns} data={data} searchBy="email" />
-    </div>
+    <main className="h-full flex flex-col gap-2">
+      <section className="border-b">
+        <BreadcrumbView className="px-3 py-3" />
+        <div className="flex flex-wrap justify-between gap-2 px-3 pb-3">
+          <div>
+            <h2 className="font-medium text-2xl">All admin</h2>
+            <p className="font-light text-sm">Make them published</p>
+          </div>
+        </div>
+      </section>
+      <section className="px-3">
+        <DataTable columns={columns} data={users} searchBy="email" />
+      </section>
+    </main>
   );
 }

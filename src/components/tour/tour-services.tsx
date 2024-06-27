@@ -1,19 +1,11 @@
 import { Dot } from "lucide-react";
-const services = [
-  "Local taxes",
-  "Hotel pickup and drop-off by air-conditioned minivan",
-  "InsuranceTransfer to a private pier",
-  "Soft drinks",
-  "Towel",
-  "Tips",
-  "Alcoholic Beverages",
-];
-export default function TourServices() {
+
+export default function TourServices({ services }: { services: string[] }) {
   return (
     <section>
       <h3 className="font-semibold text-xl">What's included</h3>
       <ul className="grid lg:grid-cols-2 gap-y-2 gap-x-4 py-3">
-        {services.map((service, index) => (
+        {services?.map((service: string, index: number) => (
           <li
             key={index}
             className="inline-flex items-center font-light text-sm"
