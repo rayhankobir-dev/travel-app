@@ -1,5 +1,4 @@
 import Hero from "@/components/home/hero";
-import TrendingDestinations from "@/components/home/trending-destinations";
 import { Fragment } from "react";
 import CampaignSection from "@/components/home/campaign-section";
 import FeaturedSection from "@/components/home/featured-trip-section";
@@ -19,7 +18,6 @@ export default function Home() {
       <SEO title="Home - Explore Tour Packges GureAshi" />
       <Hero />
       <WhyChoseUs />
-      <TrendingDestinations />
       <FeaturedSection />
       <CampaignSection />
       <section className="max-w-7xl mx-auto mt-24 px-6 lg:px-0">

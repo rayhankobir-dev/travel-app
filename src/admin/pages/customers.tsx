@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ import { useEffect, useState } from "react";
 import { authAxios } from "@/api";
 import { User } from "@/types";
 import BreadcrumbView from "@/components/ui/custom-breadcrumb";
+import toast from "react-hot-toast";
 
 export default function Users() {
   const [users, setUsers] = useState<User[] | []>([]);
@@ -30,6 +32,16 @@ export default function Users() {
 
     fetchUsers();
   }, []);
+
+  async function deleteUser(id: string) {
+    try {
+      await authAxios.delete(`/user/${id}`);
+      toast.success("User has been deleted");
+      setUsers(users.filter((item) => item._id !== id));
+    } catch (error: any) {
+      toast.error("Failed to delete");
+    }
+  }
 
   const columns: ColumnDef<User>[] = [
     {
@@ -136,9 +148,7 @@ export default function Users() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(user._id)}
-              >
+              <DropdownMenuItem onClick={() => deleteUser(user._id)}>
                 Delete
               </DropdownMenuItem>
               <DropdownMenuSeparator />

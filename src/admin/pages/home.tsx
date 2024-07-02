@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/card";
 import BreadcrumbView from "@/components/ui/custom-breadcrumb";
 import GeoChart from "@/components/ui/charts/geo-chart";
-import PieChart from "@/components/ui/charts/pie-chart";
 import SpinerLoading from "@/components/ui/spinner-loading";
 import PopularTripsCard from "../components/popular-card";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
@@ -19,10 +18,25 @@ import { BiTrip } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import SEO from "@/components/ui/seo";
 import { authAxios } from "@/api";
+import PieChart from "@/components/ui/charts/pie-chart";
+import { Analytics, Booking, Trip } from "@/types";
+
+interface Data {
+  analytics: Analytics;
+  latestBookings: Booking[];
+  popularTours: Trip[];
+  geochartData: [string, string | number][];
+  tripsLocationWisePieData: {
+    id: string;
+    label: string;
+    color: string;
+    value: number;
+  }[];
+}
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<Data | null>(null);
 
   useEffect(() => {
     async function fetAnalytics() {
@@ -38,7 +52,10 @@ export default function Dashboard() {
 
     fetAnalytics();
   }, []);
-  return (
+
+  return loading || !data ? (
+    <SpinerLoading />
+  ) : (
     <main className="h-full flex flex-col p-3">
       <SEO title="Admin - Dashboard" />
       <section className="flex flex-col gap-3 mb-6">
@@ -94,7 +111,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <Users size={15} /> {data.analytics?.totalTours} admis
+                  <Users size={15} /> {data.analytics?.totalAdmin} admis
                 </CardTitle>
               </CardContent>
             </Card>
@@ -107,7 +124,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <Users size={15} /> {data.analytics?.totalTours} customers
+                  <Users size={15} /> {data.analytics?.totalCustomer} customers
                 </CardTitle>
               </CardContent>
             </Card>
@@ -120,7 +137,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <Map size={15} /> 10 locations
+                  <Map size={15} /> {data.analytics?.totalLocation} locations
                 </CardTitle>
               </CardContent>
             </Card>
@@ -133,7 +150,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <BiTrip size={15} /> {data.analytics?.totalTours} trips
+                  <BiTrip size={15} /> {data.analytics?.totalTrips} trips
                 </CardTitle>
               </CardContent>
             </Card>
@@ -146,7 +163,8 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <BiTrip size={15} /> {data.analytics?.totalTours} trips
+                  <BiTrip size={15} /> {data.analytics?.totalPublishedTrips}{" "}
+                  trips
                 </CardTitle>
               </CardContent>
             </Card>
@@ -159,7 +177,8 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <IoMdBook size={15} /> {data.analytics?.totalOrders} bookings
+                  <IoMdBook size={15} /> {data.analytics?.totalSuccessBooking}{" "}
+                  bookings
                 </CardTitle>
               </CardContent>
             </Card>
@@ -172,7 +191,8 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <IoMdBook size={15} />0 bookings
+                  <IoMdBook size={15} />
+                  {data.analytics.totalCancelledBooking} bookings
                 </CardTitle>
               </CardContent>
             </Card>
@@ -185,7 +205,11 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
-                  <FaBangladeshiTakaSign size={12} /> 8025.00 tk.
+                  <FaBangladeshiTakaSign size={12} />
+                  {data.analytics.bookingSummary?.totalBookingAmount.toFixed(
+                    2
+                  ) || "0"}{" "}
+                  tk.
                 </CardTitle>
               </CardContent>
             </Card>
@@ -199,7 +223,10 @@ export default function Dashboard() {
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
                   <FaBangladeshiTakaSign size={12} />
-                  0.00 tk.
+                  {data.analytics.transactionSummary?.totalRefundedAmount.toFixed(
+                    2
+                  ) || "0"}{" "}
+                  tk.
                 </CardTitle>
               </CardContent>
             </Card>
@@ -207,13 +234,16 @@ export default function Dashboard() {
             <Card className="bg-rose-50 border-purple-rose h-fit">
               <CardHeader className="py-1.5">
                 <CardTitle className="text-md text-rose-600">
-                  Cancelation Charge
+                  Stored Amount
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-2">
                 <CardTitle className="inline-flex items-center gap-2 text-sm font-light">
                   <FaBangladeshiTakaSign size={12} />
-                  0.00 tk.
+                  {data.analytics.transactionSummary?.totalStoreAmount.toFixed(
+                    2
+                  ) || "0"}{" "}
+                  tk.
                 </CardTitle>
               </CardContent>
             </Card>
@@ -226,7 +256,7 @@ export default function Dashboard() {
                 <CardTitle>Total Trips</CardTitle>
               </CardHeader>
               <CardContent className="max-w-full h-96">
-                {/* <PieChart data={data?.analytics?.orderStatusData} /> */}
+                <PieChart data={data?.tripsLocationWisePieData} />
               </CardContent>
             </Card>
 
@@ -243,13 +273,7 @@ export default function Dashboard() {
               <CardTitle>Top Tourist Attractions</CardTitle>
             </CardHeader>
             <CardContent className="w-full h-[450px]">
-              <GeoChart
-                data={[
-                  ["Country", "Players"],
-                  ["United States", 1],
-                  ["Bangladesh", 100],
-                ]}
-              />
+              <GeoChart data={data.geochartData} />
             </CardContent>
           </Card>
         </section>

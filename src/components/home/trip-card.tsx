@@ -7,11 +7,9 @@ import {
 } from "../ui/card";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { Separator } from "@/components/ui/separator";
-import { Clock, MapPin, Star, Users } from "lucide-react";
+import { Clock, MapPin, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Trip } from "@/types";
-import { PiSeat } from "react-icons/pi";
-import { TbRipple } from "react-icons/tb";
 
 export default function TripCard({ trip }: { trip: Trip }) {
   return (
@@ -25,19 +23,22 @@ export default function TripCard({ trip }: { trip: Trip }) {
           <span>{trip.location.location}</span>
         </p>
         <CardTitle className="font-medium text-md hover:text-orange-600 duration-300">
-          <Link to="/">{trip.title}</Link>
+          <Link to={`/trips/${trip.slug}`}>{trip.title}</Link>
         </CardTitle>
 
         <p className="inline-flex items-center gap-1 font-light text-sm mt-1">
           <Users size={14} />
           Available:
-          <span className="font-thin">50 person</span>
+          <span className="font-thin">
+            {trip.bookingCount && trip.groupSize - trip.bookingCount}
+            {!trip.bookingCount && trip.groupSize} person
+          </span>
         </p>
       </CardContent>
       <Separator />
       <CardFooter className="flex justify-between gap-2 px-3 py-2.5">
         <p className="inline-flex items-center gap-1 font-thin text-sm">
-          <Clock size={16} /> {trip.discount} days
+          <Clock size={16} /> {trip.duration} days
         </p>
         <p className="inline-flex items-center gap-1 font-thin text-sm">
           From

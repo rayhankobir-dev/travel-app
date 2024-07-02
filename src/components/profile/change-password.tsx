@@ -59,7 +59,7 @@ export default function ChangePassword() {
     const { currentPassword, newPassword } = data;
     try {
       setLoading(true);
-      const response = await authAxios.put("/user/change-password", {
+      const response = await authAxios.post("/user/change-password", {
         currentPassword,
         newPassword,
       });
@@ -200,7 +200,7 @@ export default function ChangePassword() {
 
             <Button
               disabled={loading}
-              className="ml-auto h-11 min-w-fit w-full md:w-1/4 rounded-xl"
+              className="ml-auto h-11 min-w-fit w-full md:w-1/4 rounded-xl bg-orange-500 hover:bg-orange-600"
               type="submit"
             >
               {loading ? (

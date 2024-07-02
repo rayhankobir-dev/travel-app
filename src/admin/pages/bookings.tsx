@@ -1,9 +1,4 @@
-import { authAxios } from "@/api";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import Breadcrumb from "@/components/ui/custom-breadcrumb";
-import { DataTable } from "@/components/ui/data-table";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,24 +7,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { User } from "@/types";
-import { CaretSortIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import Breadcrumb from "@/components/ui/custom-breadcrumb";
+import { DataTable } from "@/components/ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
 import { IoMdBook } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { Booking } from "@/types";
+import { authAxios } from "@/api";
+import toast from "react-hot-toast";
 
 export default function Bookings() {
-  const [bookings, setBookings] = useState<User[] | []>([]);
+  const [bookings, setBookings] = useState<Booking[] | []>([]);
 
   useEffect(() => {
     async function fetchUsers() {
       try {
         const res = await authAxios.get("/bookings");
         setBookings(res.data.data.bookings);
-        console.log(res.data.data);
       } catch (error) {
         console.log(error);
       }
@@ -38,7 +39,28 @@ export default function Bookings() {
     fetchUsers();
   }, []);
 
-  const columns: ColumnDef<User>[] = [
+  async function cancelBooking(id: string) {
+    try {
+      const res = await authAxios.put(`/bookings/cancel/${id}`);
+      setBookings((prev) =>
+        prev.map((item) => {
+          if (item._id === res.data.data?.booking._id) {
+            item = res.data.data?.booking;
+          }
+          return item;
+        })
+      );
+    } catch (error: any) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "Failed to cancel booking"
+      );
+    }
+  }
+
+  const columns: ColumnDef<Booking>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -72,17 +94,32 @@ export default function Bookings() {
       cell: ({ row }) => <div className="">{row.getValue("tx")}</div>,
     },
     {
+      accessorKey: "tour",
+      header: () => <div className="text-left">Tour</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="min-w-[300px] flex items-center gap-2">
+            <img
+              className="max-w-12 rounded"
+              src={row.original.tour.images[0].url}
+            />
+            {row.original.tour.title}
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "user",
       header: () => <div className="text-left">User</div>,
       cell: ({ row }) => {
-        return <div className="">{row.getValue("user").fullName}</div>;
+        return <div className="">{row.original.user.fullName}</div>;
       },
     },
     {
       accessorKey: "user",
       header: () => <div className="text-left">Email</div>,
       cell: ({ row }) => {
-        return <div className="">{row.getValue("user").email}</div>;
+        return <div className="">{row.original.user.email}</div>;
       },
     },
     {
@@ -163,11 +200,11 @@ export default function Bookings() {
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const user = row.original;
+        const user = row.original.user;
 
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger onClick={(e) => e.stopPropagation()} asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <span className="sr-only">Open menu</span>
                 <DotsHorizontalIcon className="h-4 w-4" />
@@ -175,18 +212,38 @@ export default function Bookings() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(user._id)}
-              >
-                Delete
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(user.email)}
+              >
+                Copy user email
+              </DropdownMenuItem>
+              {row.original.status === "SUCCESS" && (
+                <>
+                  <DropdownMenuItem className="text-blue-500" asChild>
+                    <Link
+                      to={`/dashboard/trips/bookings/modify/${row.original._id}`}
+                    >
+                      Modify Booking
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-orange-600"
+                    onClick={() => {
+                      cancelBooking(row.original._id);
+                    }}
+                  >
+                    Cancel Booking
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         );
       },
     },
   ];
+
   return (
     <main className="h-full flex flex-col gap-2">
       <section className="border-b">
@@ -211,7 +268,7 @@ export default function Bookings() {
           </div>
         </div>
       </section>
-      <section className="px-3">
+      <section className="px-3 overflow-y-scroll">
         <DataTable columns={columns} data={bookings} searchBy="_id"></DataTable>
       </section>
     </main>

@@ -16,6 +16,7 @@ import { Separator } from "../ui/separator";
 import { weatherData } from "@/pages/wather";
 import { Skeleton } from "../ui/skeleton";
 import { Location } from "@/types";
+import { publicAxios } from "@/api";
 const API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 
 interface Props {
@@ -27,16 +28,23 @@ export default function WeatherForcast({ location, unit = "metric" }: Props) {
   const [weather, setWeather] = useState<any>(weatherData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log(location);
+
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location?.location}&units=${unit}&appid=${API_KEY}`;
 
   useEffect(() => {
-    fetch("url")
-      .then((res) => res.json())
-      .then((data) => setWeather(data))
-      .catch((error) => setError(error));
-
-    setLoading(false);
+    async function fetchForecast() {
+      try {
+        const res = await publicAxios.get(url);
+        setWeather(res.data);
+        res.data.city;
+        res.data.list;
+      } catch (error: any) {
+        setError(error?.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchForecast();
   }, [url]);
   return loading || error ? (
     <WeatherCardSkeleton />

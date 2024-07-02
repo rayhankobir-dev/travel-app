@@ -5,7 +5,7 @@ export default function WhyChoseUs() {
     <section className="max-w-7xl mx-auto px-6 lg:px-0">
       <h2 className="font-semibold text-xl mb-8">Why choose Ghure Ashi</h2>
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
         <div className="flex flex-col gap-2">
           <Ticket size={35} className="text-orange-600" />
           <h4 className="font-medium text-lg">Ultimate flexibility</h4>

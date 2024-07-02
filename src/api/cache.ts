@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { publicAxios } from ".";
 
 export async function fetchLocations() {

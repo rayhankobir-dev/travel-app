@@ -92,7 +92,6 @@ function ItemList<T>({
   loading,
   error,
 }: ItemListProps<T>) {
-  console.log(items);
   return (
     <Command>
       <CommandInput placeholder="Search..." />

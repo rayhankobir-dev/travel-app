@@ -13,7 +13,7 @@ import { Trip } from "@/types";
 
 export function FeaturedTrips() {
   const [loading, setLoading] = useState(true);
-  const [trips, setTrips] = useState(null);
+  const [trips, setTrips] = useState([]);
   useEffect(() => {
     async function fetchPopularTrips() {
       try {
@@ -33,7 +33,10 @@ export function FeaturedTrips() {
     <Carousel className="w-full max-w-full">
       <CarouselContent className="-ml-1">
         {trips?.map((trip: Trip) => (
-          <CarouselItem className="pl-1 md:basis-1/3 lg:basis-1/4">
+          <CarouselItem
+            key={trip._id}
+            className="pl-1 md:basis-1/3 lg:basis-1/4"
+          >
             <TripCard trip={trip} />
           </CarouselItem>
         ))}

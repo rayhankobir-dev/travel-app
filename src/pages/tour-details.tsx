@@ -52,13 +52,13 @@ export default function SingleTour() {
           <TourHeader
             title={trip.title}
             location={trip.location}
-            totalBooked={trip.groupSize}
+            totalBooked={trip.bookingCount || 0}
           />
           <ImageGallery images={trip.images} />
           <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-5 mt-10 px-6 lg:px-0">
             <section className="max-w-7xl mx-auto col-span-12 lg:col-span-9 order-2 lg:order-1">
               <TourStatstics
-                duration={4}
+                duration={trip.duration}
                 groupSize={trip.groupSize}
                 minAge={trip.minAge}
                 maxAge={trip.maxAge}

@@ -1,17 +1,25 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import ChangePassword from "@/components/profile/change-password";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import PersonalInformation from "@/components/profile/info";
 import { Separator } from "@/components/ui/separator";
 import useAuth from "@/hooks/useAuth";
-import PersonalInformation from "@/components/profile/info";
-import ChangePassword from "@/components/profile/change-password";
 import SEO from "@/components/ui/seo";
 
 export default function Profile() {
   const { user } = useAuth();
 
   return (
-    <section className="space-y-10 mb-10 mt-24 max-w-7xl mx-auto">
+    <section className="space-y-10 max-w-7xl mx-auto">
       <SEO title="Your Profile - GhureAshi" />
+      <div className="faq-section h-48 flex justify-start items-end bg-gray-50 bg-opacity-20">
+        <div className="max-w-7xl w-full mx-auto space-y-2  py-10 px-6 lg:px-0">
+          <h1 className="font-semibold text-3xl">My Profile</h1>
+          <p className="font-light text-sm">
+            Find our bookings history. And go to support for any help.
+          </p>
+        </div>
+      </div>
 
       <Card className="grid grid-cols-1 md:grid-cols-5 border-none shadow-none gap-4">
         <Card className="py-4 col-span-5 md:col-span-5 lg:col-span-3 pt-0 overflow-hidden">
@@ -33,9 +41,8 @@ export default function Profile() {
           <PersonalInformation />
         </Card>
 
-        <Card className="col-span-5 lg:col-span-2 flex flex-col md:flex-row  lg:flex-col justify-between gap-3 border-none shadow-none">
+        <Card className="max-h-fit col-span-5 lg:col-span-2 flex flex-col md:flex-row  lg:flex-col justify-between gap-3 border-none shadow-none">
           <ChangePassword />
-          <Card className="flex-1 py-5">hello</Card>
         </Card>
       </Card>
     </section>

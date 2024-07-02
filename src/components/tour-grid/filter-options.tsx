@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ComboBox } from "@/components/ui/combobox";
@@ -11,21 +10,26 @@ import { CalendarIcon, FilterX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { publicAxios } from "@/api";
 import { useSearchParams } from "react-router-dom";
+import { Location } from "@/types";
 
 export default function FilterOptions() {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [price, setPrice] = useState<number>(
-    Number(searchParams.get("price")) || 2500
+    Number(searchParams.get("price")) || 25000
   );
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null
+  );
+
   const [date, setDate] = useState<DateRange | undefined>(() => {
-    const from = searchParams.get("from")
-      ? parse(searchParams.get("from"), "yyyy-MM-dd", new Date())
+    const fromParam = searchParams.get("from");
+    const toParam = searchParams.get("to");
+
+    const from = fromParam
+      ? parse(fromParam, "yyyy-MM-dd", new Date())
       : new Date();
-    const to = searchParams.get("to")
-      ? parse(searchParams.get("to"), "yyyy-MM-dd", new Date())
-      : undefined;
+    const to = toParam ? parse(toParam, "yyyy-MM-dd", new Date()) : undefined;
+
     return { from, to };
   });
 
@@ -40,7 +44,7 @@ export default function FilterOptions() {
       const locations = res.data.data.locations;
       const locationName = searchParams.get("location");
       if (locationName) {
-        const location = locations.find((loc) =>
+        const location = locations.find((loc: Location) =>
           loc.location.includes(locationName)
         );
         setSelectedLocation(location);
@@ -72,6 +76,8 @@ export default function FilterOptions() {
     searchParams.delete("from");
     searchParams.delete("to");
     searchParams.delete("maxPrice");
+    setSelectedLocation(null);
+    setDate(undefined);
     setSearchParams(searchParams);
   };
 
@@ -112,7 +118,7 @@ export default function FilterOptions() {
               id="date"
               variant={"outline"}
               className={cn(
-                "min-w-fit justify-start text-left text-black font-light rounded-lg",
+                "w-full overflow-x-scroll justify-start text-left text-black font-light rounded-lg",
                 !date && "text-muted-foreground"
               )}
             >

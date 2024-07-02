@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { BiSolidOffer } from "react-icons/bi";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 export function MobileSidebar() {
   const [open, setOpen] = useState(false);
   const { user }: any = useAuth();

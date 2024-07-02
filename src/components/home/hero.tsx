@@ -9,10 +9,11 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { publicAxios } from "@/api";
+import { Location } from "@/types";
 
 export default function Hero() {
   const [date, setDate] = useState<DateRange | undefined>(undefined);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState<Location | null>(null);
 
   async function fetchLocations() {
     const res = await publicAxios.get("/locations");

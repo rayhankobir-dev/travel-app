@@ -8,7 +8,7 @@ export default function FeaturedSection() {
       <div className="flex justify-between gap-2 py-3">
         <h2 className="font-semibold text-lg mb-5">Find Popular Tours</h2>
         <Button variant="link" asChild>
-          <Link to="/trips?popular=true">See All</Link>
+          <Link to="/trips?">See All</Link>
         </Button>
       </div>
 

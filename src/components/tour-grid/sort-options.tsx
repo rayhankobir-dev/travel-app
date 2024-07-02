@@ -8,8 +8,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export type SortOption = "az" | "za" | "hl" | "lh";
 

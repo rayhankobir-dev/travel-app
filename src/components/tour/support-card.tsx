@@ -7,8 +7,11 @@ import {
   CardFooter,
   CardTitle,
 } from "../ui/card";
+import useAuth from "@/hooks/useAuth";
 
 export default function SupportCard() {
+  const { user } = useAuth();
+  if (user?.role == "admin") return null;
   return (
     <Card className="my-3">
       <CardHeader className="p-3.5">

@@ -1,5 +1,4 @@
-import { authAxios } from "@/api";
-import { Button } from "@/components/ui/button";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Card,
   CardContent,
@@ -7,12 +6,15 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Breadcrumb from "@/components/ui/custom-breadcrumb";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { authAxios } from "@/api";
 
 export default function AllTrips() {
   const [loading, setLoading] = useState(true);
   const [trips, setTrips] = useState([]);
+
   useEffect(() => {
     const fetchTrips = async () => {
       try {
@@ -27,6 +29,7 @@ export default function AllTrips() {
 
     fetchTrips();
   }, []);
+
   return (
     <main className="h-full flex flex-col">
       <section className="border-b">
@@ -65,14 +68,14 @@ import { Separator } from "@/components/ui/separator";
 import { BiTrip } from "react-icons/bi";
 import { Trip } from "@/types";
 import toast from "react-hot-toast";
+import { format } from "date-fns";
 
 function TripCard({ trip }: { trip: Trip }) {
   async function deleteTrip() {
     try {
       await authAxios.delete(`/trips/${trip._id}`);
       toast.success("Trip successfully deleted");
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       const message = error?.response?.data?.message || "Failed to delete trip";
       toast.success(message);
     }
@@ -101,19 +104,24 @@ function TripCard({ trip }: { trip: Trip }) {
       <CardFooter className="min-w-fit flex flex-col justify-between gap-5 p-3">
         <div className="w-full grid grid-cols-2 gap-2">
           <p className="font-light text-sm">
-            Tour start: <span className="font-thin">12-03-2024</span>
+            Tour start:{" "}
+            <span className="font-thin">{format(trip.startedAt, "PP")}</span>
           </p>
           <p className="font-light text-sm">
-            Tour end: <span className="font-thin">12-03-2024</span>
+            Tour end:{" "}
+            <span className="font-thin">{format(trip.endedAt, "PP")}</span>
           </p>
           <p className="inline-flex items-center gap-1.5 font-light text-sm">
             Group Size: <span className="font-thin">{trip.groupSize} seat</span>
           </p>
           <p className="inline-flex items-center gap-1.5 font-light text-sm">
-            Aviailable: <span className="font-thin">{trip.groupSize} seat</span>
+            Aviailable:{" "}
+            <span className="font-thin">
+              {trip.groupSize - (trip.bookingCount || 0)} seat
+            </span>
           </p>
           <p className="inline-flex items-center gap-1.5 font-light text-sm">
-            Booked: <span className="font-thin">{trip.groupSize} seat</span>
+            Booked: <span className="font-thin">{trip.bookingCount} seat</span>
           </p>
           <p className="inline-flex items-center gap-1.5 font-light text-sm">
             Cost:
@@ -125,12 +133,14 @@ function TripCard({ trip }: { trip: Trip }) {
             Discount Amount:
             <strong className="flex items-center font-medium">
               <FaBangladeshiTakaSign size={13} />{" "}
-              {(trip.cost / trip.discount) * 100} %
+              {(trip.discount / 100) * trip.cost}
             </strong>
           </p>
           <p className="inline-flex items-center gap-1.5 font-light text-sm">
             Tax(%):
-            <strong className="flex items-center font-medium">2%</strong>
+            <strong className="flex items-center font-medium">
+              {trip.tax}%
+            </strong>
           </p>
         </div>
 
@@ -145,16 +155,19 @@ function TripCard({ trip }: { trip: Trip }) {
             </Link>
           </Button>
 
-          <div className="space-x-1.5">
+          <div className="flex space-x-1.5">
             <Button
               onClick={deleteTrip}
               className="w-10 h-10 p-2.5 bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white"
             >
               <Trash2 />
             </Button>
-            <Button className="w-10 h-10 p-2.5 bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white">
+            <Link
+              to={`/dashboard/trips/edit/${trip._id}`}
+              className="w-10 h-10 p-2.5 flex bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white rounded-md"
+            >
               <PenBox />
-            </Button>
+            </Link>
           </div>
         </div>
       </CardFooter>

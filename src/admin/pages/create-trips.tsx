@@ -14,14 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import BreadcrumbView from "@/components/ui/custom-breadcrumb";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Image, Minus, Plus, Trash2 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
@@ -62,12 +55,12 @@ const tourSchema = Yup.object().shape({
     .required("Maximum Age is required")
     .positive("Maximum Age must be positive"),
   location: Yup.object().required("Location is required"),
-  highlights: Yup.array().of(
-    Yup.string().min(8).max(255).required("Highlight is required")
-  ),
-  services: Yup.array().of(
-    Yup.string().min(8).max(255).required("Service is required")
-  ),
+  highlights: Yup.array()
+    .of(Yup.string().min(8).max(255).required("Highlight is required"))
+    .optional(),
+  services: Yup.array()
+    .of(Yup.string().min(8).max(255).required("Service is required"))
+    .optional(),
   activities: Yup.array().of(
     Yup.object().shape({
       title: Yup.string().required("Activity title is required"),
@@ -82,7 +75,7 @@ const tourSchema = Yup.object().shape({
   ),
   images: Yup.array()
     .of(
-      Yup.mixed().test("fileType", "Unsupported File Format", (value) => {
+      Yup.mixed().test("fileType", "Unsupported File Format", (value: any) => {
         if (!value) return true;
         return ["image/jpeg", "image/png", "image/jpg"].includes(value.type);
       })
@@ -118,7 +111,7 @@ export default function AddTour() {
       overview: undefined,
       startedAt: undefined,
       endedAt: undefined,
-      duration: 1,
+      duration: undefined,
       highlights: [],
       services: [],
       activities: [],
@@ -168,7 +161,7 @@ export default function AddTour() {
     try {
       const formData = new FormData();
       if (data.images) {
-        Array.from(data.images).forEach((image: File) => {
+        Array.from(data.images).forEach((image: any) => {
           formData.append("images", image);
         });
       }
@@ -187,7 +180,7 @@ export default function AddTour() {
       await authAxios.post("/trips", formDataWithUrls);
       toast.success("Trip successfully added");
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       const message = error?.message || error.response.data.message;
       toast.error(message || "Failed to create trip");
     } finally {
@@ -195,11 +188,29 @@ export default function AddTour() {
     }
   };
 
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "startedAt" || name === "endedAt") {
+        const startedAt = value.startedAt ? new Date(value.startedAt) : null;
+        const endedAt = value.endedAt ? new Date(value.endedAt) : null;
+        if (startedAt && endedAt) {
+          const differenceMs = Number(endedAt) - Number(startedAt);
+          const differenceDays = Math.floor(
+            differenceMs / (1000 * 60 * 60 * 24)
+          );
+          form.setValue("duration", differenceDays);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
   // Update slug whenever the title changes
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name === "title") {
-        form.setValue("slug", slugify(value.title));
+        form.setValue("slug", slugify(value.title || ""));
       }
     });
 
@@ -207,10 +218,10 @@ export default function AddTour() {
   }, [form]);
 
   const onDrop = useCallback(
-    (acceptedFiles) => {
+    (acceptedFiles: any) => {
       const existingImages = form.getValues("images") || [];
       const updatedImages = existingImages.concat(
-        acceptedFiles.map((file) =>
+        acceptedFiles.map((file: any) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -307,20 +318,18 @@ export default function AddTour() {
                     <Controller
                       name="location"
                       control={form.control}
-                      render={({ field }) => (
+                      render={({ field }: { field: any }) => (
                         <ComboBox
                           options={fetchLocations}
                           selected={field.value}
                           setSelected={(value) =>
-                            form.setValue("location", value)
+                            form.setValue("location", value || {})
                           }
                           value="_id"
                           label="location"
                         >
                           <Button
                             variant="outline"
-                            role="combobox"
-                            aria-expanded={open}
                             className="w-full justify-between"
                           >
                             {field.value?.location
@@ -408,7 +417,9 @@ export default function AddTour() {
                       render={({ field }) => (
                         <DatePicker
                           date={field.value}
-                          setDate={(value) => form.setValue("startedAt", value)}
+                          setDate={(value: any) =>
+                            form.setValue("startedAt", value)
+                          }
                         >
                           <Button
                             variant={"outline"}
@@ -443,7 +454,9 @@ export default function AddTour() {
                       render={({ field }) => (
                         <DatePicker
                           date={field.value}
-                          setDate={(value) => form.setValue("endedAt", value)}
+                          setDate={(value: any) =>
+                            form.setValue("endedAt", value)
+                          }
                         >
                           <Button
                             variant={"outline"}
@@ -576,7 +589,7 @@ export default function AddTour() {
                 )}
 
                 <div className="flex items-center flex-wrap gap-2.5 mt-2.5">
-                  {images?.map((file, index) => (
+                  {images?.map((file: any, index) => (
                     <div key={index} className="relative">
                       <img
                         src={file?.preview}

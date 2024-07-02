@@ -24,7 +24,7 @@ export default function Transations() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const res = await authAxios.get("/transactions");
+        const res = await authAxios.get("/transactions?type=payment");
         setTransactions(res.data.transactions);
       } catch (error) {
         console.log(error);

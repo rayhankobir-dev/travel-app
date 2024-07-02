@@ -126,11 +126,13 @@ export type Trip = {
   maxAge: number;
   startedAt: Date;
   endedAt: Date;
+  duration: number;
   images: Image[];
   highlights: string[];
   services: string[];
   activities: Activity[];
   faqs: Faq[];
+  bookingCount?: number;
 };
 
 export type Transaction = {
@@ -148,3 +150,41 @@ export type Transaction = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Booking = {
+  _id: string;
+  appliedTaxAmount: number;
+  bookedAt: Date;
+  isModified: boolean;
+  perPersonCost: number;
+  status: string;
+  tax: number;
+  totalCost: number;
+  totalPerson: number;
+  tour: Trip;
+  tx: string;
+  txHistory: Transaction[];
+  user: User;
+};
+
+export type Analytics = {
+  totalAdmin: number;
+  totalCustomer: number;
+  totalLocation: number;
+  totalTrips: number;
+  totalPublishedTrips: number;
+  totalPendingBooking: number;
+  totalSuccessBooking: number;
+  totalCancelledBooking: number;
+  bookingSummary: {
+    totalBookingAmount: number;
+    cancelledBookingsAmount: number;
+  };
+  transactionSummary: {
+    totalPaymentAmount: number;
+    totalRefundedAmount: number;
+    totalStoreAmount: number;
+  };
+};
+
+export type GeoData = [string | number];

@@ -1,13 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { cn } from "@/lib/utils";
 import { NavLink } from "react-router-dom";
 import { BaggageClaim, Gauge, Map, ShoppingBag, Users } from "lucide-react";
 import { TbCreditCardRefund, TbPlayFootball } from "react-icons/tb";
-import {
-  MdOutlineCancelScheduleSend,
-  MdOutlineRunningWithErrors,
-} from "react-icons/md";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import React, { Fragment } from "react";
@@ -30,7 +25,7 @@ interface Props {
 
 export function Sidebar({ className }: Props) {
   return (
-    <aside className={cn("", className, "md:hidden lg:block bg-gray-50")}>
+    <aside className={cn("bg-gray-50", className)}>
       <div className="w-full h-full space-y-4 py-4 bg-slate">
         <ScrollArea className="h-full">
           <nav className="grid items-start gap-2">
@@ -154,32 +149,6 @@ export function Sidebar({ className }: Props) {
                 >
                   <TbCreditCardRefund className="mr-2 h-4 w-4" />
                   <span>Refund</span>
-                </NavLink>
-                <NavLink
-                  end={true}
-                  to="/dashboard/payment/canceled"
-                  className={({ isActive }) =>
-                    cn(
-                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
-                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
-                    )
-                  }
-                >
-                  <MdOutlineRunningWithErrors className="mr-2 h-4 w-4" />
-                  <span>Canceled</span>
-                </NavLink>
-                <NavLink
-                  end={true}
-                  to="/dashboard/payment/failed"
-                  className={({ isActive }) =>
-                    cn(
-                      "group flex items-center rounded-md px-2 pl-3 py-1.5 text-sm font-normal hover:bg-orange-50 hover:text-orange-600",
-                      isActive ? "bg-orange-50 text-orange-600" : "transparent"
-                    )
-                  }
-                >
-                  <MdOutlineCancelScheduleSend className="mr-2 h-4 w-4" />
-                  <span>Failed</span>
                 </NavLink>
               </Fragment>
             </UserLinks>

@@ -1,10 +1,9 @@
-import Sport1 from "@/assets/sport-1.png";
-import { ArrowRight, Bike, Bus, Clock, MapPin, Plane } from "lucide-react";
-import { Button } from "../ui/button";
+import { ArrowRight, MapPin, Plane } from "lucide-react";
+import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
+import { FaBangladeshiTakaSign } from "react-icons/fa6";
 import { Separator } from "../ui/separator";
 import { Link } from "react-router-dom";
-import { FaBangladeshiTakaSign } from "react-icons/fa6";
-import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
+import { Button } from "../ui/button";
 import { format } from "date-fns";
 import { Trip } from "@/types";
 
@@ -36,13 +35,13 @@ export default function TourItem({ trip }: { trip: Trip }) {
 
         <div className="inline-flex justify-between gap-2 font-thin text-sm py-1.5">
           <p>
-            <strong>Tour start:</strong> {format(trip.startedAt, "PP")}
+            <strong>Started At:</strong> {format(trip.startedAt, "PP")}
           </p>
           <p>
-            <strong>Tour end:</strong> {format(trip.endedAt, "PP")}
+            <strong>Ended At:</strong> {format(trip.endedAt, "PP")}
           </p>
           <p>
-            <strong>Total:</strong> {trip.duration} Days
+            <strong>Duration:</strong> {trip.duration} days
           </p>
         </div>
       </CardContent>
@@ -53,16 +52,15 @@ export default function TourItem({ trip }: { trip: Trip }) {
       <CardFooter className="min-w-fit flex flex-col justify-between p-3 md:py-5 px-3 md:px-6">
         <div className="w-full grid grid-cols-2 md:flex md:flex-col gap-2">
           <p className="inline-flex items-center gap-2 font-thin text-sm">
-            <Clock size={15} /> 2 Days 1 Nights
-          </p>
-          <p className="inline-flex items-center gap-2 font-thin text-sm">
-            <Plane size={15} /> Air
-            <Bus size={15} /> Bus
-            <Bike size={15} /> Bike
+            <strong>Transportation:</strong> <Plane size={15} /> Mixed
           </p>
           <p className="inline-flex items-center gap-2 font-light text-sm">
-            Aviailable:{" "}
-            <span className="font-thin">{trip.groupSize} person</span>
+            <strong>Aviailable:</strong>
+            {trip.bookingCount && trip.groupSize - trip.bookingCount}
+            {!trip.bookingCount && trip.groupSize} person
+          </p>
+          <p className="inline-flex items-center gap-2 font-thin text-sm">
+            <strong>Tax:</strong> {trip.tax} %
           </p>
         </div>
         <p className="flex items-center gap-1.5 font-thin text-md py-3 lg:py-0">

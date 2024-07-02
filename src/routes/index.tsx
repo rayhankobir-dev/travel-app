@@ -26,6 +26,9 @@ import AdminRoute from "./admin-route";
 import CreateTrip from "@/admin/pages/create-trips";
 import Transations from "@/admin/pages/transactions";
 import Refunds from "@/admin/pages/refunds";
+import MyBookings from "@/pages/bookings";
+import EditTrip from "@/admin/pages/edit-trip";
+import ModifyBooking from "@/admin/pages/modify-booking";
 
 export default function AppRoutes() {
   return (
@@ -40,6 +43,7 @@ export default function AppRoutes() {
         <Route path="/trips/:slug" element={<SingleTour />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/bookings" element={<MyBookings />} />
           <Route path="/support" element={<Support />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-failed" element={<PaymentFailed />} />
@@ -56,7 +60,9 @@ export default function AppRoutes() {
           <Route path="trips">
             <Route index element={<AllTrips />} />
             <Route path="create" element={<CreateTrip />} />
+            <Route path="edit/:id" element={<EditTrip />} />
             <Route path="bookings" element={<Bookings />} />
+            <Route path="bookings/modify/:id" element={<ModifyBooking />} />
             <Route path="locations" element={<Locations />} />
           </Route>
 

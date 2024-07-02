@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import SortsOptions, { SortOption } from "./sort-options";
-import TourItem from "./tour-item";
-import { publicAxios } from "@/api";
-import { Skeleton } from "../ui/skeleton";
-import { Separator } from "../ui/separator";
 import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Separator } from "../ui/separator";
+import { Skeleton } from "../ui/skeleton";
+import { publicAxios } from "@/api";
+import TourItem from "./tour-item";
 
 const sortOptionsLabels: Record<SortOption, string> = {
   az: "A to Z",
@@ -16,11 +16,10 @@ const sortOptionsLabels: Record<SortOption, string> = {
 export default function ListingArea() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  console.log(searchParams);
-
   const [sortBy, setSortBy] = useState<SortOption>(
     (searchParams.get("sort") as SortOption) || "az"
   );
+
   const [fetching, setFetching] = useState(true);
   const [trips, setTrips] = useState([]);
 
@@ -33,7 +32,7 @@ export default function ListingArea() {
           location: searchParams.get("location"),
           from: searchParams.get("from"),
           to: searchParams.get("to"),
-          price: searchParams.get("price"),
+          maxPrice: searchParams.get("maxPrice"),
           sort: searchParams.get("sort"),
         };
 

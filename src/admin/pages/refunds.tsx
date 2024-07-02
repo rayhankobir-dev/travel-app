@@ -111,6 +111,28 @@ export default function Refunds() {
       },
     },
     {
+      accessorKey: "refundReason",
+      header: () => <div className="text-center">Reason</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="text-left text-nowrap  font-light text-xs">
+            {row.getValue("refundReason")}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "refundRefId",
+      header: () => <div className="text-nowrap">Ref ID</div>,
+      cell: ({ row }) => {
+        return (
+          <div className="text-center font-medium">
+            {row.getValue("refundRefId")}
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "createdAt",
       header: () => (
         <div className="text-center text-nowrap">Transaction At</div>
