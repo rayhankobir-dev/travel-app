@@ -52,13 +52,13 @@ export default function PopularTripsCard({ title, subTitle, trips }: Props) {
                 </CardDescription>
                 <CardDescription className="flex items-center gap-4 mt-1 text-gray-500 text-xs md:textsm">
                   <span className="min-w-fit flex gap-1 items-center">
-                    <Map size={14} /> Cox's Bazar
+                    <Map size={14} /> {trip?.location?.location}
                   </span>
                   <span className="min-w-fit flex gap-1 items-center">
                     <FaBangladeshiTakaSign size={12} /> {trip.cost}
                   </span>
                   <span className="min-w-fit flex gap-1 items-center">
-                    <Users size={12} /> 1 Person
+                    <Users size={12} /> {trip.groupSize} Person
                   </span>
                 </CardDescription>
               </CardContent>

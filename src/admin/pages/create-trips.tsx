@@ -56,10 +56,18 @@ const tourSchema = Yup.object().shape({
     .positive("Maximum Age must be positive"),
   location: Yup.object().required("Location is required"),
   highlights: Yup.array()
-    .of(Yup.string().min(8).max(255).required("Highlight is required"))
+    .of(
+      Yup.object().shape({
+        highlight: Yup.string().required("Highlight is required"),
+      })
+    )
     .optional(),
   services: Yup.array()
-    .of(Yup.string().min(8).max(255).required("Service is required"))
+    .of(
+      Yup.object().shape({
+        service: Yup.string().required("Service is required"),
+      })
+    )
     .optional(),
   activities: Yup.array().of(
     Yup.object().shape({
@@ -174,6 +182,8 @@ export default function AddTour() {
 
       const formDataWithUrls = {
         ...data,
+        highlights: data.highlights.map((item: any) => item.highlight),
+        services: data.services.map((item: any) => item.service),
         images: res.data.urls,
       };
 
@@ -613,7 +623,7 @@ export default function AddTour() {
                   </h3>
                   <Button
                     type="button"
-                    onClick={() => addHighlight("")}
+                    onClick={() => addHighlight({ highlight: "" })}
                     className="w-fit h-6 flex gap-1 px-2 bg-orange-600 hover:bg-orange-500 text-[.6rem]"
                   >
                     <Plus size={12} /> Add
@@ -623,7 +633,7 @@ export default function AddTour() {
                   {highlightFields.map((item, index) => (
                     <FormField
                       key={item.id}
-                      name={`highlights[${index}]`}
+                      name={`highlights[${index}].highlight` as const}
                       render={({ field }) => (
                         <FormItem className="col-span-1">
                           <FormControl>
@@ -654,7 +664,7 @@ export default function AddTour() {
                   <h3 className="font-medium my-5">Trip Services(Optional)</h3>
                   <Button
                     type="button"
-                    onClick={() => addService("")}
+                    onClick={() => addService({ service: "" })}
                     className="w-fit h-6 flex gap-1 px-2 bg-orange-600 hover:bg-orange-500 text-[.6rem]"
                   >
                     <Plus size={12} /> Add
@@ -664,7 +674,7 @@ export default function AddTour() {
                   {serviceFields.map((item, index) => (
                     <FormField
                       key={item.id}
-                      name={`services[${index}]`}
+                      name={`services[${index}].service` as const}
                       render={({ field }) => (
                         <FormItem className="col-span-1">
                           <FormControl>
