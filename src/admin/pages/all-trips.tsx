@@ -84,11 +84,11 @@ function TripCard({ trip }: { trip: Trip }) {
     <Card className="rounded-xl">
       <CardHeader className="min-w-fit relative p-3">
         <img
-          src={trip.images[0].url}
+          src={trip?.images[0]?.url}
           className="object-cover aspect-video rounded-lg"
         />
         <div className="absolute top-3 left-5 py-1.5 px-2 bg-orange-500 font-thin text-xs text-white rounded-lg">
-          {trip.discount} % OFF
+          {trip?.discount} % OFF
         </div>
       </CardHeader>
       <CardContent className="w-full flex flex-col justify-between p-3">

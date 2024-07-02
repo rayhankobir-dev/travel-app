@@ -19,6 +19,7 @@ import SEO from "@/components/ui/seo";
 import { Trip } from "@/types";
 import { useParams } from "react-router-dom";
 import Error404 from "@/admin/pages/404";
+import { Helmet } from "react-helmet";
 
 export default function SingleTour() {
   const [trip, setTrip] = useState<Trip | null>(null);
@@ -48,6 +49,13 @@ export default function SingleTour() {
       {trip && (
         <>
           <SEO title={trip.title} description={trip.overview} />
+          <Helmet>
+            <meta property="og:title" content="My Page Title" />
+            <meta property="og:description" content="Description of my page" />
+            <meta property="og:image" content={trip.images[0].url} />
+            <meta property="og:url" content={trip.images[0].url} />
+            <meta property="og:type" content="website" />
+          </Helmet>
 
           <TourHeader
             title={trip.title}

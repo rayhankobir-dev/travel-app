@@ -12,10 +12,11 @@ import { Link } from "react-router-dom";
 import { Trip } from "@/types";
 
 export default function TripCard({ trip }: { trip: Trip }) {
+  if (!trip) return null;
   return (
     <Card className="p-0 overflow-hidden hover:shadow-md duration-300">
       <CardHeader className="p-0">
-        <img src={trip.images[0].url} className="max-h-48" />
+        <img src={trip?.images[0]?.url} className="max-h-48" />
       </CardHeader>
       <CardContent className="p-3 py-1">
         <p className="inline-flex items-center gap-1 text-xs font-thin">
@@ -30,8 +31,10 @@ export default function TripCard({ trip }: { trip: Trip }) {
           <Users size={14} />
           Available:
           <span className="font-thin">
-            {trip.bookingCount && trip.groupSize - trip.bookingCount}
-            {!trip.bookingCount && trip.groupSize} person
+            {trip.bookingCount
+              ? trip.groupSize - trip.bookingCount
+              : trip.groupSize}{" "}
+            person
           </span>
         </p>
       </CardContent>
