@@ -8,7 +8,7 @@ import {
 import Logo from "@/assets/logo.png";
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff, LockKeyhole, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -90,14 +90,14 @@ export default function Signup() {
               onSubmit={signupForm.handleSubmit(onSubmit)}
               className="px-1 space-y-5 w-full relative"
             >
-              <Button
+              {/* <Button
                 variant={"outline"}
                 type="button"
                 className="w-full rounded-xl h-11 space-x-3 text-gray-600 "
               >
                 <FcGoogle size={20} />
                 <p>Login with Google</p>
-              </Button>
+              </Button> */}
               <div className="space-y-2">
                 <FormField
                   name="fullName"
