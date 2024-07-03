@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+import NotFound from "@/assets/not-found.svg";
 export default function EditTrip() {
   const [loading, setLoading] = useState(true);
   const [trip, setTrip] = useState<Trip | null>(null);
+  const [error, setError] = useState<any>(null);
   const params = useParams();
 
   useEffect(() => {
@@ -11,7 +12,7 @@ export default function EditTrip() {
         const res = await authAxios.get(`/trips/trip/${params.id}`);
         setTrip(res.data.data.trip);
       } catch (error) {
-        console.log(error);
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -20,7 +21,20 @@ export default function EditTrip() {
     getTrip();
   }, [params.id]);
 
-  if (!loading && trip) {
+  if (loading) {
+    return (
+      <div className="h-full flex justify-center items-center">
+        <SpinerLoading className="text-orange-500" />
+      </div>
+    );
+  } else if (error || !trip) {
+    return (
+      <div className="h-full flex justify-center items-center">
+        <img src={NotFound} className="max-w-sm" />
+        <p>{error.response.data.message}</p>
+      </div>
+    );
+  } else {
     return <EditTripForm trip={trip} />;
   }
 }
@@ -53,6 +67,7 @@ import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { Trip } from "@/types";
 import { useParams } from "react-router-dom";
+import SpinerLoading from "@/components/ui/spinner-loading";
 
 const tourSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),

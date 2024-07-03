@@ -17,8 +17,10 @@ import { authAxios } from "@/api";
 import { User } from "@/types";
 import BreadcrumbView from "@/components/ui/custom-breadcrumb";
 import toast from "react-hot-toast";
+import SpinerLoading from "@/components/ui/spinner-loading";
 
 export default function Users() {
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<User[] | []>([]);
   useEffect(() => {
     async function fetchUsers() {
@@ -27,6 +29,8 @@ export default function Users() {
         setUsers(res.data.users);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -148,7 +152,13 @@ export default function Users() {
         </div>
       </section>
       <section className="px-3">
-        <DataTable columns={columns} data={users} searchBy="email" />
+        {loading ? (
+          <div className="flex justify-center mt-5">
+            <SpinerLoading className="text-orange-500" />
+          </div>
+        ) : (
+          <DataTable columns={columns} data={users} searchBy="email" />
+        )}
       </section>
     </main>
   );

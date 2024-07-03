@@ -54,7 +54,9 @@ export default function Dashboard() {
   }, []);
 
   return loading || !data ? (
-    <SpinerLoading />
+    <div className="h-full flex justify-center items-center">
+      <SpinerLoading className="text-orange-500" />
+    </div>
   ) : (
     <main className="h-full flex flex-col p-3">
       <SEO title="Admin - Dashboard" />

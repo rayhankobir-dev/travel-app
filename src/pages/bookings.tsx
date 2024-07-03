@@ -4,6 +4,7 @@ import SEO from "@/components/ui/seo";
 import SpinerLoading from "@/components/ui/spinner-loading";
 import { Booking } from "@/types";
 import { useEffect, useState } from "react";
+import Empty from "@/assets/empty.svg";
 
 export default function MyBookings() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,11 +39,17 @@ export default function MyBookings() {
 
       <section>
         {loading ? (
-          <SpinerLoading />
-        ) : (
+          <div className="flex justify-center my-5">
+            <SpinerLoading className="text-orange-500" />
+          </div>
+        ) : bookings.length > 0 ? (
           bookings.map((booking: Booking) => (
             <BookingsCard key={booking._id} booking={booking} />
           ))
+        ) : (
+          <div className="flex justify-center my-4">
+            <img src={Empty} className="max-w-sm" />
+          </div>
         )}
       </section>
     </main>

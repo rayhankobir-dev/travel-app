@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import SpinerLoading from "@/components/ui/spinner-loading";
 import { cn } from "@/lib/utils";
 import { Transaction } from "@/types";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -20,6 +21,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 
 export default function Transations() {
+  const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[] | []>([]);
   useEffect(() => {
     async function fetchUsers() {
@@ -28,6 +30,8 @@ export default function Transations() {
         setTransactions(res.data.transactions);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -182,11 +186,17 @@ export default function Transations() {
         </div>
       </section>
       <section className="px-3">
-        <DataTable
-          columns={columns}
-          data={transactions}
-          searchBy="transactionId"
-        ></DataTable>
+        {loading ? (
+          <div className="flex justify-center mt-5">
+            <SpinerLoading className="text-orange-500" />
+          </div>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={transactions}
+            searchBy="transactionId"
+          ></DataTable>
+        )}
       </section>
     </main>
   );

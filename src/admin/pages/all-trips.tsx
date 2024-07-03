@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { authAxios } from "@/api";
+import Empty from "@/assets/empty.svg";
 
 export default function AllTrips() {
   const [loading, setLoading] = useState(true);
@@ -53,10 +54,21 @@ export default function AllTrips() {
         </div>
       </section>
       <section className="flex-1 p-3 overflow-y-scroll">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
-          {!loading &&
-            trips.map((trip, index) => <TripCard key={index} trip={trip} />)}
-        </div>
+        {loading ? (
+          <div className="flex justify-center mt-4">
+            <SpinerLoading className="text-orange-500" />
+          </div>
+        ) : trips.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            {trips.map((trip, index) => (
+              <TripCard key={index} trip={trip} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex justify-center mt-4">
+            <img src={Empty} className="max-w-sm" />
+          </div>
+        )}
       </section>
     </main>
   );
@@ -69,6 +81,7 @@ import { BiTrip } from "react-icons/bi";
 import { Trip } from "@/types";
 import toast from "react-hot-toast";
 import { format } from "date-fns";
+import SpinerLoading from "@/components/ui/spinner-loading";
 
 function TripCard({ trip }: { trip: Trip }) {
   async function deleteTrip() {

@@ -76,7 +76,9 @@ export default function ModifyBooking() {
       </section>
       <section className="p-3">
         {isFetching ? (
-          <SpinerLoading />
+          <div className="flex justify-center my-5">
+            <SpinerLoading className="text-orange-500" />
+          </div>
         ) : (
           booking && <ModifyBookingForm booking={booking} />
         )}

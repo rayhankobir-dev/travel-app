@@ -174,7 +174,9 @@ export default function Locations() {
           <Separator />
           <CardContent className="p-3">
             {isFetching ? (
-              <SpinerLoading />
+              <div className="flex justify-center my-5">
+                <SpinerLoading className="text-orange-500" />
+              </div>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {locations.length > 0 ? (

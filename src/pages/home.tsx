@@ -11,6 +11,7 @@ import Cruies from "@/assets/cruises.png";
 import Hiking from "@/assets/hiking.png";
 import WhyChoseUs from "@/components/home/why-chose";
 import SEO from "@/components/ui/seo";
+import ImgHome from "@/assets/screenshots/home.png";
 
 export default function Home() {
   return (
@@ -19,7 +20,7 @@ export default function Home() {
         title="Home - Explore Tour Packges GureAshi"
         description="This is an awesome website to find tour pacakge in bangladesh."
         type="website"
-        image="https://api.ghureashi.xyz/uploads/home.png"
+        image={ImgHome}
       />
       <Hero />
       <WhyChoseUs />

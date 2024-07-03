@@ -22,8 +22,10 @@ import { cn } from "@/lib/utils";
 import { Booking } from "@/types";
 import { authAxios } from "@/api";
 import toast from "react-hot-toast";
+import SpinerLoading from "@/components/ui/spinner-loading";
 
 export default function Bookings() {
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState<Booking[] | []>([]);
 
   useEffect(() => {
@@ -33,6 +35,8 @@ export default function Bookings() {
         setBookings(res.data.data.bookings);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -109,14 +113,14 @@ export default function Bookings() {
       },
     },
     {
-      accessorKey: "user",
+      accessorKey: "user.fullName",
       header: () => <div className="text-left">User</div>,
       cell: ({ row }) => {
         return <div className="">{row.original.user.fullName}</div>;
       },
     },
     {
-      accessorKey: "user",
+      accessorKey: "user.email",
       header: () => <div className="text-left">Email</div>,
       cell: ({ row }) => {
         return <div className="">{row.original.user.email}</div>;
@@ -269,7 +273,17 @@ export default function Bookings() {
         </div>
       </section>
       <section className="px-3 overflow-y-scroll">
-        <DataTable columns={columns} data={bookings} searchBy="_id"></DataTable>
+        {loading ? (
+          <div className="flex justify-center mt-5">
+            <SpinerLoading className="text-orange-500" />
+          </div>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={bookings}
+            searchBy="_id"
+          ></DataTable>
+        )}
       </section>
     </main>
   );

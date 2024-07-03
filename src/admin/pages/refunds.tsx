@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import Breadcrumb from "@/components/ui/custom-breadcrumb";
 import { DataTable } from "@/components/ui/data-table";
+import SpinerLoading from "@/components/ui/spinner-loading";
 import { cn } from "@/lib/utils";
 import { Transaction } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
@@ -10,6 +11,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 
 export default function Refunds() {
+  const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState<Transaction[] | []>([]);
   useEffect(() => {
     async function fetchUsers() {
@@ -18,6 +20,8 @@ export default function Refunds() {
         setTransactions(res.data.transactions);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -160,11 +164,17 @@ export default function Refunds() {
         </div>
       </section>
       <section className="px-3">
-        <DataTable
-          columns={columns}
-          data={transactions}
-          searchBy="transactionId"
-        ></DataTable>
+        {loading ? (
+          <div className="flex justify-center mt-5">
+            <SpinerLoading className="text-orange-500" />
+          </div>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={transactions}
+            searchBy="transactionId"
+          ></DataTable>
+        )}
       </section>
     </main>
   );
