@@ -29,9 +29,9 @@ export default function EditTrip() {
     );
   } else if (error || !trip) {
     return (
-      <div className="h-full flex justify-center items-center">
+      <div className="h-full flex flex-col justify-center items-center">
         <img src={NotFound} className="max-w-sm" />
-        <p>{error.response.data.message}</p>
+        <p className="text-rose-500 text-xl font-light">Trip doesn't exist</p>
       </div>
     );
   } else {
