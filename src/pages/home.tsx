@@ -11,26 +11,16 @@ import Cruies from "@/assets/cruises.png";
 import Hiking from "@/assets/hiking.png";
 import WhyChoseUs from "@/components/home/why-chose";
 import SEO from "@/components/ui/seo";
-import { Helmet } from "react-helmet";
 
 export default function Home() {
   return (
     <Fragment>
-      <SEO title="Home - Explore Tour Packges GureAshi" />
-
-      <Helmet>
-        <meta property="og:title" content="My Page Title" />
-        <meta property="og:description" content="Description of my page" />
-        <meta
-          property="og:image"
-          content="https://travel-app-backend-1-ra9w.onrender.com/uploads/trips/home.png"
-        />
-        <meta
-          property="og:url"
-          content="https://travel-app-backend-1-ra9w.onrender.com/uploads/trips/home.png"
-        />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <SEO
+        title="Home - Explore Tour Packges GureAshi"
+        description="This is an awesome website to find tour pacakge in bangladesh."
+        type="website"
+        image="https://api.ghureashi.xyz/uploads/home.png"
+      />
       <Hero />
       <WhyChoseUs />
       <FeaturedSection />
