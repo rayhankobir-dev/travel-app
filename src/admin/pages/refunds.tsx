@@ -163,17 +163,19 @@ export default function Refunds() {
           </div>
         </div>
       </section>
-      <section className="px-3">
+      <section className="flex-1 px-3 overflow-y-scroll">
         {loading ? (
           <div className="flex justify-center mt-5">
             <SpinerLoading className="text-orange-500" />
           </div>
         ) : (
-          <DataTable
-            columns={columns}
-            data={transactions}
-            searchBy="transactionId"
-          ></DataTable>
+          <div className="h-full">
+            <DataTable
+              columns={columns}
+              data={transactions}
+              searchBy="transactionId"
+            ></DataTable>
+          </div>
         )}
       </section>
     </main>

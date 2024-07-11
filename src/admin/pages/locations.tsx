@@ -95,11 +95,11 @@ export default function Locations() {
   };
 
   return (
-    <main>
+    <main className="h-full flex flex-col gap-2">
       <section className="border-b">
         <Breadcrumb className="bg-gray-50 px-3 py-3" />
       </section>
-      <section className="p-2 space-y-2">
+      <section className="flex-1 overflow-y-scroll p-2 space-y-2">
         <Card className="overflow-hidden">
           <CardHeader className="p-4 bg-gray-50">
             <h1 className="font-medium text-lg">Create new Locations</h1>

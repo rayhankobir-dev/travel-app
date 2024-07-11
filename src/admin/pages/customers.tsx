@@ -173,7 +173,7 @@ export default function Users() {
           </div>
         </div>
       </section>
-      <section className="px-3">
+      <section className="flex-1 overflow-y-scroll px-3">
         {loading ? (
           <div className="flex justify-center mt-5">
             <SpinerLoading className="text-orange-500" />
