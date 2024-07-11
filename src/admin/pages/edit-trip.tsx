@@ -206,11 +206,15 @@ export function EditTripForm({ trip }: { trip: Trip }) {
         });
       }
 
-      const res = await authAxios.post("/trips/upload-images", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await authAxios.post(
+        "https://travel-app-backend-1-ra9w.onrender.com/api/v1/trips/upload-images",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       const formDataWithUrls = {
         ...data,
