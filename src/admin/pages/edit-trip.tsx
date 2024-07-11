@@ -9,7 +9,9 @@ export default function EditTrip() {
   useEffect(() => {
     async function getTrip() {
       try {
-        const res = await authAxios.get(`/trips/trip/${params.id}`);
+        const res = await axios.get(
+          `https://travel-app-backend-1-ra9w.onrender.com/api/v1/trips/trip/${params.id}`
+        );
         setTrip(res.data.data.trip);
       } catch (error) {
         setError(error);
@@ -68,6 +70,7 @@ import toast from "react-hot-toast";
 import { Trip } from "@/types";
 import { useParams } from "react-router-dom";
 import SpinerLoading from "@/components/ui/spinner-loading";
+import axios from "axios";
 
 const tourSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),

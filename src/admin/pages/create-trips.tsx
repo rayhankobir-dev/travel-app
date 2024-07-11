@@ -25,6 +25,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { DatePicker } from "@/components/ui/date-picker";
 import { cn } from "@/lib/utils";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const tourSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -174,11 +175,15 @@ export default function AddTour() {
         });
       }
 
-      const res = await authAxios.post("/trips/upload-images", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        "https://travel-app-backend-1-ra9w.onrender.com/api/v1/trips/upload-images",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       const formDataWithUrls = {
         ...data,
